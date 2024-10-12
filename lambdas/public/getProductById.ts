@@ -7,33 +7,35 @@ import {
 	GetCommandInput,
 	GetCommandOutput,
 } from "@aws-sdk/lib-dynamodb";
-export const getEntry: Handler = async (
+export const handler: Handler = async (
 	event?: APIGatewayProxyEventV2
 ): Promise<APIGatewayProxyResultV2> => {
 	const client = new DynamoDBClient();
 	const dynamo = DynamoDBDocumentClient.from(client);
+	let body = {};
+	let statusCode = 200;
+	let headers = { "Content-Type": "application/json" };
+	const id = event?.pathParameters!.id as string;
+	const category = id.split(":")[0];
+	const productId = parseInt(id.split(":")[1]);
 	let res: GetCommandOutput;
 	const params: GetCommandInput = {
 		TableName: process.env.DYNAMODB_TABLE_NAME,
 		Key: {
-			category: "test",
-			productId: 1,
+			category,
+			productId,
 		},
 	};
 	try {
 		res = await dynamo.send(new GetCommand(params));
 		if (!res.Item) throw new Error("Couldn't get product from database");
 	} catch (error: any) {
-		return {
-			statusCode: 400,
-			body: error.message,
-		};
+		statusCode = 400;
+		body = error.message;
 	}
 	return {
-		statusCode: 200,
-		body: JSON.stringify({
-			category: res.Item.category,
-			productId: res.Item.productId,
-		}),
+		statusCode,
+		body: JSON.stringify(res!.Item),
+		headers,
 	};
 };
