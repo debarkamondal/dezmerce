@@ -3,6 +3,10 @@ import * as cdk from "aws-cdk-lib";
 import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
 import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as apigwv2 from "aws-cdk-lib/aws-apigatewayv2";
+import {
+	HttpLambdaAuthorizer,
+	HttpLambdaResponseType,
+} from "aws-cdk-lib/aws-apigatewayv2-authorizers";
 import * as iam from "aws-cdk-lib/aws-iam";
 
 import {
@@ -86,6 +90,24 @@ export class adminBackendStack extends cdk.Stack {
 				functionName: "createProduct",
 			}),
 		};
+
+		const lambdaAuthorizer = new lambda.Function(this, "lambdaAuthorizer", {
+			runtime: lambda.Runtime.NODEJS_20_X,
+			code: lambda.Code.fromAsset("lambdas/bin/admin"),
+			handler: "authorizer.handler",
+			functionName: "lambdaAuthorizer",
+		});
+
+		const authorizer = new HttpLambdaAuthorizer(
+			"AdminAuthorizer",
+			lambdaAuthorizer,
+			{
+				responseTypes: [HttpLambdaResponseType.SIMPLE],
+				resultsCacheTtl: cdk.Duration.seconds(0),
+				authorizerName: "AdminAuthorizer",
+			}
+		);
+
 		const adminApi = new apigwv2.HttpApi(this, "Dezmerce-backend-admin");
 		adminApi.addRoutes({
 			path: "/createProduct",
@@ -94,6 +116,7 @@ export class adminBackendStack extends cdk.Stack {
 				"createProductIntegration",
 				adminLambdas.createProduct
 			),
+			authorizer,
 		});
 		new cdk.CfnOutput(this, "admin gateway", {
 			value: adminApi.apiEndpoint,
