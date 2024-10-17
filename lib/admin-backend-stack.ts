@@ -20,16 +20,7 @@ import {
 import { HttpLambdaIntegration } from "aws-cdk-lib/aws-apigatewayv2-integrations";
 
 export class adminBackendStack extends cdk.Stack {
-	private S3Config = {
-		endpoint: process.env.S3_URL || S3_URL,
-		region: "auto",
-		bucketName: process.env.S3_BUCKET_NAME || S3_BUCKET_NAME,
-		credentials: {
-			accessKeyId: process.env.S3_ACCESS_KEY_ID || S3_ACCESS_KEY_ID,
-			secredAccessKey: process.env.S3_SECRET_ACCESS_KEY || S3_SECRET_ACCESS_KEY,
-		},
-	};
-	public readonly mainTable: dynamodb.TableV2;
+	public readonly mainTable: dynamodb.TableV2; // Declaring table as public for cross-stack referencing.
 	constructor(scope: Construct, id: string, props: cdk.StackProps) {
 		super(scope, id, props);
 
@@ -55,7 +46,11 @@ export class adminBackendStack extends cdk.Stack {
 				publicDynamoDBPolicy: new iam.PolicyDocument({
 					statements: [
 						new iam.PolicyStatement({
-							actions: ["dynamodb:GetItem", "dynamodb:PutItem"],
+							actions: [
+								"dynamodb:GetItem",
+								"dynamodb:PutItem",
+								"dynamodb:DeleteItem",
+							],
 							resources: [this.mainTable.tableArn],
 						}),
 						new iam.PolicyStatement({
@@ -104,6 +99,11 @@ export class adminBackendStack extends cdk.Stack {
 				handler: "login.handler",
 				functionName: "loginLambda",
 			}),
+			deleteProduct: new lambda.Function(this, "deleteProductLambda", {
+				...lambdaParams,
+				handler: "deleteProduct.handler",
+				functionName: "deleteProduct",
+			}),
 		};
 
 		const authorizer = new HttpLambdaAuthorizer(
@@ -124,6 +124,15 @@ export class adminBackendStack extends cdk.Stack {
 			integration: new HttpLambdaIntegration(
 				"createProductIntegration",
 				adminLambdas.createProduct
+			),
+			authorizer,
+		});
+		adminApi.addRoutes({
+			path: "/deleteProduct/{id}",
+			methods: [apigwv2.HttpMethod.DELETE],
+			integration: new HttpLambdaIntegration(
+				"deleteProductIntegration",
+				adminLambdas.deleteProduct
 			),
 			authorizer,
 		});
