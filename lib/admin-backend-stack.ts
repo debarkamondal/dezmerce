@@ -86,6 +86,16 @@ export class adminBackendStack extends cdk.Stack {
 				handler: "createProduct.handler",
 				functionName: "createProduct",
 			}),
+			deleteProduct: new lambda.Function(this, "deleteProductLambda", {
+				...lambdaParams,
+				handler: "deleteProduct.handler",
+				functionName: "deleteProduct",
+			}),
+			updateProduct: new lambda.Function(this, "updateProductLambda", {
+				...lambdaParams,
+				handler: "updateProduct.handler",
+				functionName: "updateProduct",
+			}),
 			lambdaAuthorizer: new lambda.Function(this, "adminAuthorizer", {
 				runtime: lambda.Runtime.NODEJS_20_X,
 				code: lambda.Code.fromAsset("lambdas/bin/admin"),
@@ -98,11 +108,6 @@ export class adminBackendStack extends cdk.Stack {
 				environment: { ...lambdaParams.environment, JWT_SECRET, DOMAIN_NAME },
 				handler: "login.handler",
 				functionName: "loginLambda",
-			}),
-			deleteProduct: new lambda.Function(this, "deleteProductLambda", {
-				...lambdaParams,
-				handler: "deleteProduct.handler",
-				functionName: "deleteProduct",
 			}),
 		};
 
