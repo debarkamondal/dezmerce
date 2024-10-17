@@ -14,6 +14,8 @@ import {
 	S3_URL,
 	S3_SECRET_ACCESS_KEY,
 	S3_BUCKET_NAME,
+	JWT_SECRET,
+	DOMAIN_NAME,
 } from "../config.json";
 import { HttpLambdaIntegration } from "aws-cdk-lib/aws-apigatewayv2-integrations";
 
@@ -89,22 +91,29 @@ export class adminBackendStack extends cdk.Stack {
 				handler: "createProduct.handler",
 				functionName: "createProduct",
 			}),
+			lambdaAuthorizer: new lambda.Function(this, "adminAuthorizer", {
+				runtime: lambda.Runtime.NODEJS_20_X,
+				code: lambda.Code.fromAsset("lambdas/bin/admin"),
+				environment: { JWT_SECRET },
+				handler: "authorizer.handler",
+				functionName: "adminAuthorizer",
+			}),
+			login: new lambda.Function(this, "loginLambda", {
+				...lambdaParams,
+				environment: { ...lambdaParams.environment, JWT_SECRET, DOMAIN_NAME },
+				handler: "login.handler",
+				functionName: "loginLambda",
+			}),
 		};
-
-		const lambdaAuthorizer = new lambda.Function(this, "lambdaAuthorizer", {
-			runtime: lambda.Runtime.NODEJS_20_X,
-			code: lambda.Code.fromAsset("lambdas/bin/admin"),
-			handler: "authorizer.handler",
-			functionName: "lambdaAuthorizer",
-		});
 
 		const authorizer = new HttpLambdaAuthorizer(
 			"AdminAuthorizer",
-			lambdaAuthorizer,
+			adminLambdas.lambdaAuthorizer,
 			{
 				responseTypes: [HttpLambdaResponseType.SIMPLE],
 				resultsCacheTtl: cdk.Duration.seconds(0),
 				authorizerName: "AdminAuthorizer",
+				identitySource: ["$request.header.Cookie"],
 			}
 		);
 
@@ -117,6 +126,14 @@ export class adminBackendStack extends cdk.Stack {
 				adminLambdas.createProduct
 			),
 			authorizer,
+		});
+		adminApi.addRoutes({
+			path: "/login",
+			methods: [apigwv2.HttpMethod.POST],
+			integration: new HttpLambdaIntegration(
+				"loginLambdaIntegration",
+				adminLambdas.login
+			),
 		});
 		new cdk.CfnOutput(this, "admin gateway", {
 			value: adminApi.apiEndpoint,
