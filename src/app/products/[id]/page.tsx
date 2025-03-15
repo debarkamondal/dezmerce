@@ -78,7 +78,6 @@ export default async function Product({
                         })}
                     </TableBody>
                 </Table>
-
                 <p className="m-2 text-justify">{data.info}</p>
             </div>
         </main>
