@@ -30,12 +30,11 @@ const products = [
     },
 ]
 const SearchPage = async (props: { searchParams: SearchParams }) => {
-    await new Promise((resolve)=>setTimeout(resolve,2000))
     const { search } = await props.searchParams
     return (
-        <div className="mx-5 mt-2">
-            <p className="text-xl font-medium">Showing results for: &ldquo;{search}&rdquo;</p>
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 lg:gap-4 gap-2 mt-4">
+        <div className="mx-5">
+            <p className="text-lg md:text-xl lg:text-center my-4 lg:my-8 font-semibold">Showing results for: &ldquo;{search}&rdquo;</p>
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:gap-4 gap-2">
                 {products.map((product, index) =>
                     <Link href={product.url} key={index} className="p-2 border border-secondary shadow rounded-md">
                         <Image src={product.image} height={150} width={150} alt={"product-thumbnail"} className="m-auto"/>

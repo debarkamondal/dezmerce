@@ -28,6 +28,7 @@ export default async function Product({
             [key: string]: string;
         }
     }
+    console.log(params)
     const data: mockProduct = {
         thumbnail: "https://m.media-amazon.com/images/I/611SuZX5oYL._SL1000_.jpg",
         title: "Espressif ESP32 DevKit v1",
