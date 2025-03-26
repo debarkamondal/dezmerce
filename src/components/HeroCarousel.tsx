@@ -8,13 +8,6 @@ import {
 } from "@/components/ui/carousel"
 import { ChevronRight } from "lucide-react";
 import Image from "next/image";
-import { Alex_Brush } from "next/font/google";
-
-const alexBrush = Alex_Brush({
-    variable: "--font-alex-brush",
-    weight: "400",
-    style: "normal"
-})
 
 type CarouselData = {
     hook: string,
@@ -31,10 +24,10 @@ const HeroCarousel = (props: { carouselData: CarouselData[] }) => {
                 {props.carouselData.map((item) => {
                     return (
                         <CarouselItem className="relative" key={item.image}>
-                            <div className="flex justify-around items-center">
-                                <div className="absolute md:static w-full left-4 bottom-0 p-4 text-secondary md:text-primary bg-linear-to-r from-primary/70 to-60% rounded-b-xl md:bg-none md:space-y-4">
+                            <div className="flex justify-evenly items-center">
+                                <div className="absolute md:static grow md:grow-0 left-4 bottom-0 p-4 text-secondary md:text-primary bg-linear-to-r from-primary/70 to-60% rounded-b-xl md:bg-none md:space-y-4">
                                     <p className="md:mx-4 text-xl md:text-4xl font-light">{item.hook}</p>
-                                    <p className={`${alexBrush.className} text-5xl md:text-9xl font-normal`}>{item.category}</p>
+                                    <p className={`font-alex-brush text-5xl md:text-9xl font-normal`}>{item.category}</p>
                                     <p className="md:mx-4 font-medium">Starting from &#8377; {item.price}* </p>
                                     <Button className="mt-2 w-16 h-16 rounded-full bg-secondary md:bg-primary"><ChevronRight className="size-8 text-primary md:text-secondary" /></Button>
                                 </div>
@@ -46,7 +39,7 @@ const HeroCarousel = (props: { carouselData: CarouselData[] }) => {
                 <CarouselItem>
                     <div className="flex flex-col items-center justify-center h-full gap-12">
                         <p className="text-5xl">Want this website for </p>
-                        <span className={`${alexBrush.className} text-8xl`}>Yourself?</span>
+                        <span className={`font-alex-brush text-8xl`}>Yourself?</span>
                         <p className="text-xl">You can host it yourself or we can do it for you</p>
                         <div className="space-x-8 flex items-center">
                             <Button className="w-32 h-12 font-bold">
@@ -58,8 +51,8 @@ const HeroCarousel = (props: { carouselData: CarouselData[] }) => {
                     </div>
                 </CarouselItem>
             </CarouselContent>
-            <CarouselPrevious className="hidden xl:block p-2" />
-            <CarouselNext className="hidden xl:block p-2" />
+            <CarouselPrevious className="hidden lg:block p-2 mx-8 lg:mx-0" />
+            <CarouselNext className="hidden lg:block p-2 mx-8 lg:mx-0" />
         </Carousel>
     )
 }
