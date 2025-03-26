@@ -27,14 +27,14 @@ const navLinks: NavLinks = {
 
 export default async function NavBar() {
     return (
-        <nav className="p-2 flex justify-between items-center gap-4 mx-auto">
+        <nav className="py-2 flex justify-between items-center gap-4 mx-auto">
             <Link href={"/"}>
                 <Image src={"/logo.png"} height="50" width="50" alt="brand-logo" />
             </Link>
             <ul className="gap-16 align-self-start grow ml-14 hidden lg:flex">
                 {Object.keys(navLinks).map((link) =>
                     <Link href={navLinks[link]} key={link}>
-                        <li className="uppercase font-semibold" >{link}</li>
+                        <li className="uppercase font-semibold text-sm" >{link}</li>
                     </Link>
                 )}
             </ul>
