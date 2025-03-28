@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { Alex_Brush} from "next/font/google";
+import { Alex_Brush } from "next/font/google";
 import "./globals.css";
 import NavBar from "@/components/NavBar";
+import Footer from "@/components/Footer";
 
 const alexBrush = Alex_Brush({
     variable: "--font-alex-brush",
@@ -23,10 +24,11 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body
-                className={`${alexBrush.variable} antialiased px-2 md:px-12 xl:px-40`}
+                className={`${alexBrush.variable} antialiased`}
             >
                 <NavBar />
                 {children}
+                <Footer />
             </body>
         </html >
     );

@@ -6,6 +6,7 @@ import {
     CarouselNext,
     CarouselPrevious,
 } from "@/components/ui/carousel"
+import { cn } from "@/lib/utils";
 import { ChevronRight } from "lucide-react";
 import Image from "next/image";
 
@@ -37,22 +38,37 @@ const HeroCarousel = (props: { carouselData: CarouselData[] }) => {
                     )
                 })}
                 <CarouselItem>
-                    <div className="flex flex-col items-center justify-center h-full gap-12">
-                        <p className="text-5xl">Want this website for </p>
-                        <span className={`font-alex-brush text-8xl`}>Yourself?</span>
-                        <p className="text-xl">You can host it yourself or we can do it for you</p>
-                        <div className="space-x-8 flex items-center">
-                            <Button className="w-32 h-12 font-bold">
-                                <span>Github</span>
-                                <Image src={"/github.svg"} height="20" width="20" alt="github-icon" className="invert" />
-                            </Button>
-                            <Button className="w-32 h-12 font-bold">Contact Us</Button>
+                    <div className="relative flex h-full items-center justify-center bg-white dark:bg-black">
+                        <div
+                            className={cn(
+                                "absolute inset-0",
+                                "[background-size:20px_20px]",
+                                "[background-image:linear-gradient(to_right,#e4e4e7_1px,transparent_1px),linear-gradient(to_bottom,#e4e4e7_1px,transparent_1px)]",
+                                "dark:[background-image:linear-gradient(to_right,#262626_1px,transparent_1px),linear-gradient(to_bottom,#262626_1px,transparent_1px)]",
+                            )}
+                        />
+                        {/* Radial gradient for the container to give a faded look */}
+                        <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-white [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)] dark:bg-black"></div>
+                        <div className="relative z-20 py-8">
+                            <div className="flex flex-col items-center justify-center h-full gap-12 px-2 text-center">
+                                <p className="text-5xl">Want this website for </p>
+                                <span className={`font-alex-brush text-8xl md:text-9xl`}>Yourself?</span>
+                                <p className="text-xl">You can host it yourself or hire me</p>
+                                <div className="space-x-8 flex items-center">
+                                    <Button className="w-32 h-12 font-bold">
+                                        <span>Github</span>
+                                        <Image src={"/github-logo.svg"} height="20" width="20" alt="github-icon" className="invert" />
+                                    </Button>
+                                    <Button className="w-32 h-12 font-bold">Contact Me</Button>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </CarouselItem>
             </CarouselContent>
-            <CarouselPrevious className="hidden lg:block p-2 mx-8 lg:mx-0" />
-            <CarouselNext className="hidden lg:block p-2 mx-8 lg:mx-0" />
+            <CarouselPrevious className="hidden lg:block p-2 mx-8 xl:mx-0" />
+            <CarouselNext className="hidden lg:block p-2 mx-8 xl:mx-0" />
         </Carousel>
     )
 }

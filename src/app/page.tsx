@@ -78,7 +78,7 @@ const marvelCollection = [
     }
 ]
 
-const DCCollection = [
+const dCCollection = [
     {
         title: "Harley Quinn: Baddie Women oversized T-shirt",
         image: "https://prod-img.thesouledstore.com/public/theSoul/uploads/catalog/product/1728626524_2529480.jpg?format=webp&w=480&dpr=1.8",
@@ -106,19 +106,19 @@ const DCCollection = [
 ]
 export default function Home() {
     return (
-        <div className="md:mt-4 py-2">
+        <div className="md:mt-4 p-2 md:px-8 xl:px-40">
             <HeroCarousel carouselData={carouselData} />
             <h2 className="text-primary font-alex-brush text-center text-4xl md:text-6xl my-8 lg:my-16 font-semibold">Top Collection</h2>
             <ProductGrid products={topCollection} className="md:grid-cols-4" />
             <h2 className="text-primary font-alex-brush text-center text-4xl md:text-6xl my-8 lg:my-16 font-semibold">Official Merch</h2>
-            <div className="md:flex gap-4 space-y-4">
+            <div className="flex flex-col md:flex-row gap-4">
                 <div className="bg-red-100 p-4 rounded-md md:w-1/2">
                     <Image src="/marvel-logo.png" height="100" width="500" alt="Marvel-logo" className="w-32 mx-auto object-fill mb-4" />
                     <ProductGrid products={marvelCollection} />
                 </div>
                 <div className="bg-blue-100 p-4 rounded-md md:w-1/2">
-                    <Image src="/dc-logo.png" height="200" width="200" alt="Marvel-logo" className="w-14 mx-auto object-fill mb-4" />
-                    <ProductGrid products={DCCollection} />
+                    <Image src="/dc-logo.png" height="200" width="200" alt="DC-logo" className="w-14 mx-auto object-fill mb-4" />
+                    <ProductGrid products={dCCollection} />
                 </div>
             </div>
         </div>
