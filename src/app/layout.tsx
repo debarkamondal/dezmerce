@@ -24,7 +24,7 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body
-                className={`${alexBrush.variable} antialiased`}
+                className={`${alexBrush.variable} antialiased flex flex-col text-primary`}
             >
                 <NavBar />
                 {children}
