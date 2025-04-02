@@ -18,6 +18,7 @@ export default function ImageCarousel({ imageUrls }: { imageUrls: string[] }) {
                                 alt={`product-image-${index}`}
                                 width={300}
                                 height={200}
+                                className="size-auto"
                             />
                         </CarouselItem>
                     );

@@ -8,7 +8,6 @@ import {
     TableCell,
     TableRow,
 } from "@/components/ui/table"
-import { CartProvider } from "@/components/providers/CartProvider";
 
 type mockProduct = {
     id: string;
@@ -24,32 +23,32 @@ type mockProduct = {
         [key: string]: string;
     }
 }
-const data: mockProduct = {
-    id: '1',
-    thumbnail: "https://m.media-amazon.com/images/I/611SuZX5oYL._SL1000_.jpg",
-    title: "Espressif ESP32 DevKit v1",
-    defaultDelivery: "12Jan",
-    price: 540,
-    ratings: [3, 2024],
-    images: [
-        "https://m.media-amazon.com/images/I/61YX-zoj9JL._SL1000_.jpg",
-        "https://m.media-amazon.com/images/I/51Qw62A9HiL._SL1000_.jpg",
-        "https://m.media-amazon.com/images/I/61Lri0ZUbML._SL1500_.jpg",
-    ],
-    variants: [["4 MB", "/products/1"], ["8 MB", "/products/2"], ["16 MB", "#link3"], ["32 MB", "#link4"], ["64 MB", "#link5"]],
-    info: "Doit esp32 development board wifi+bluetooth , dual core esp 32 esp 32s esp 32 similar esp8266 esp32 is integrated with antenna and rf balun, power amplifier, low noise amplifiers, filters, and power management module. The entire solution takes up the least amount of printed circuit board area. This board is used with 2.4 ghz dual mode wi fi and bluetooth chips by tsmc 40nm low power technology, power and rf properties best, which is safe, reliable, and scalable to a variety of applications. Note images may differ from actual product.",
-    specs: {
-        size: "xl",
-        fabric: "cotton",
-        color: "red"
-    }
-};
 export default async function Product({
     params,
 }: {
     params: Promise<{ id: string }>;
 }) {
     const { id } = await params
+    const data: mockProduct = {
+        id,
+        thumbnail: "https://m.media-amazon.com/images/I/611SuZX5oYL._SL1000_.jpg",
+        title: "Espressif ESP32 DevKit v1",
+        defaultDelivery: "12Jan",
+        price: 540,
+        ratings: [3, 2024],
+        images: [
+            "https://m.media-amazon.com/images/I/61YX-zoj9JL._SL1000_.jpg",
+            "https://m.media-amazon.com/images/I/51Qw62A9HiL._SL1000_.jpg",
+            "https://m.media-amazon.com/images/I/61Lri0ZUbML._SL1500_.jpg",
+        ],
+        variants: [["4 MB", "/products/1"], ["8 MB", "/products/2"], ["16 MB", "/products/3"], ["32 MB", "/products/4"], ["64 MB", "/products/5"]],
+        info: "Doit esp32 development board wifi+bluetooth , dual core esp 32 esp 32s esp 32 similar esp8266 esp32 is integrated with antenna and rf balun, power amplifier, low noise amplifiers, filters, and power management module. The entire solution takes up the least amount of printed circuit board area. This board is used with 2.4 ghz dual mode wi fi and bluetooth chips by tsmc 40nm low power technology, power and rf properties best, which is safe, reliable, and scalable to a variety of applications. Note images may differ from actual product.",
+        specs: {
+            size: "xl",
+            fabric: "cotton",
+            color: "red"
+        }
+    };
     return (
         <main>
             <div className="flex flex-col items-center md:items-start md:flex-row md:gap-20 md:mt-8 text-foreground">
@@ -60,22 +59,20 @@ export default async function Product({
                         {data.ratings[0]} stars | {data.ratings[1]} reviews
                     </span>
                     <span className="font-bold">&#8377; {data.price}</span>
-                    <CartProvider>
-                        <AddToCartButton product={{
-                            id: data.id,
-                            title: data.title,
-                            price: data.price,
-                            image: data.thumbnail,
-                            url: `/products/${id}`
-                        }} />
-                    </CartProvider>
+                    <AddToCartButton product={{
+                        id: data.id,
+                        title: data.title,
+                        price: data.price,
+                        image: data.thumbnail,
+                        url: `/products/${id}`
+                    }} />
                     <DeliveryBox defaultDelivery={data.defaultDelivery} />
                     <VariantSelector variants={data.variants} />
                 </div>
             </div>
             <div className="m-2">
                 <h2 className="font-semibold text-lg">Product Infomation</h2>
-                <Table className="my-2 max-w-96 mx-auto">
+                <Table className="my-2 max-w-96 mx-auto md:ml-16">
                     <TableBody>
                         {Object.keys(data.specs).map((spec: string, index: number) => {
                             return (

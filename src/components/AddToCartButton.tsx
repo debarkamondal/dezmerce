@@ -20,7 +20,7 @@ const AddToCartButton = ({ product }: { product: Product }) => {
                 type: "delete",
                 item: { ...product, qty: item.qty }
             })}><MinusIcon /></button>
-            <span className="inline-block min-w-8 text-center">{item.qty ? item.qty : "Add to Cart"}</span>
+            <span className="inline-block min-w-8 text-center cursor-default">{item.qty ? item.qty : "Add to Cart"}</span>
             <button className="cursor-pointer" hidden={item.qty === 0} onClick={() => dispatch({
                 type: 'add',
                 item: { ...product, qty: item.qty }
