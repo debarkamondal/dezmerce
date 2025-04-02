@@ -39,10 +39,13 @@ export default async function NavBar() {
                         </div>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
-                        <DropdownMenuItem>Profile</DropdownMenuItem>
-                        <DropdownMenuItem>Billing</DropdownMenuItem>
-                        <DropdownMenuItem>Team</DropdownMenuItem>
-                        <DropdownMenuItem>Subscription</DropdownMenuItem>
+                        {Object.keys(navLinks).map((link) =>
+                            <DropdownMenuItem key={link}>
+                                <Link href={navLinks[link]} className="capitalize">
+                                    {link}
+                                </Link>
+                            </DropdownMenuItem>
+                        )}
                     </DropdownMenuContent>
                 </DropdownMenu>
             </div>

@@ -22,7 +22,7 @@ const Cart = () => {
     )
     return (
         <DropdownMenu>
-            <DropdownMenuTrigger hidden={!totalPrice}className={`fixed bottom-0 right-0 bg-primary size-16 rounded-full text-secondary m-4`}>
+            <DropdownMenuTrigger hidden={!totalPrice} className={`border-2 border-secondary cursor-pointer fixed bottom-0 right-0 bg-primary size-16 rounded-full text-secondary m-4`}>
                 <ShoppingCart className="m-auto" size={25} />
             </DropdownMenuTrigger>
             <DropdownMenuContent className="m-2 mx-4 min-w-72 max-w-2/3 p-2">

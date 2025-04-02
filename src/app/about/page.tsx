@@ -1,6 +1,7 @@
 import Image from "next/image"
 
 const About = async () => {
+
     return (
         <>
             <div className="md:relative text-center flex gap-2 items-center justify-around ml-6 md:ml-16 xl:ml-32 ">
