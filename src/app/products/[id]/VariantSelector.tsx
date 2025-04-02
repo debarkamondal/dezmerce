@@ -9,7 +9,6 @@ export default function VariantSelector({
   variants: Array<Array<string>>;
 }) {
   const url = usePathname();
-  console.log(url);
   return (
     <div className="grid grid-cols-3 md:grid-cols-4 gap-2 my-2 text-center">
       {variants.map((variant, index) => {

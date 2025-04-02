@@ -2,7 +2,7 @@ import Image from "next/image"
 
 const About = async () => {
     return (
-        <div className="grow p-2 md:px-8 xl:px-40">
+        <>
             <div className="md:relative text-center flex gap-2 items-center justify-around ml-6 md:ml-16 xl:ml-32 ">
                 <h1 className="font-alex-brush text-5xl md:text-9xl font-semibold mix-blend-difference absolute -left-6 md:-left-36 rotate-270 text-secondary text-left">About</h1>
                 <Image src="/about-1.jpg" height={900} width={300} alt="about-img-1" className="w-1/2 xl:w-1/3 rounded-md" />
@@ -42,7 +42,7 @@ const About = async () => {
                     <Image src="/about-4.jpg" height={500} width={500} alt="fabric" className="rounded-md w-1/2 xl:w-1/3 grayscale" />
                 </div>
             </div>
-        </div>
+        </>
     )
 }
 

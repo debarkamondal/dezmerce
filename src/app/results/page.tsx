@@ -4,24 +4,28 @@ type SearchParams = Promise<{ search: string | string[] | undefined }>
 
 const products = [
     {
+        id: '1',
         title: "Esp32 8MB ROM",
         image: "https://m.media-amazon.com/images/I/61YX-zoj9JL._SL1000_.jpg",
         url: "/products/1",
         price: 500
     },
     {
+        id: '2',
         title: "Esp32 8MB ROM",
         image: "https://m.media-amazon.com/images/I/61YX-zoj9JL._SL1000_.jpg",
         url: "/products/1",
         price: 500
     },
     {
+        id: '3',
         title: "Esp32 8MB ROM",
         image: "https://m.media-amazon.com/images/I/61YX-zoj9JL._SL1000_.jpg",
         url: "/products/1",
         price: 500
     },
     {
+        id: '4',
         title: "Esp32 8MB ROM",
         image: "https://m.media-amazon.com/images/I/61YX-zoj9JL._SL1000_.jpg",
         url: "/products/1",
