@@ -36,7 +36,7 @@ const getRole = (profile: GitHubProfile) => {
 export const { handlers, signIn, signOut, auth } = NextAuth({
     providers: [GitHub({
         async profile(profile) {
-            let data = await fetch('https://utuo7fj1m2.execute-api.ap-south-1.amazonaws.com/')
+            const data = await fetch('https://api.dkmondal.in/')
             const body = await data.text()
             console.log(body)
             return {

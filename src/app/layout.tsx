@@ -9,7 +9,8 @@ import { CartProvider } from "@/components/providers/CartProvider";
 const alexBrush = Alex_Brush({
     variable: "--font-alex-brush",
     weight: "400",
-    style: "normal"
+    style: "normal",
+    subsets:["latin"]
 })
 
 
