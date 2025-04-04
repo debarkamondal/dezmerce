@@ -7,6 +7,7 @@ import {
 } from "./ui/dropdown-menu";
 import Link from "next/link";
 import SearchBar from "./SearchBar";
+import SignIn from "./SignIn";
 
 type NavLinks = { [key: string]: string }
 const navLinks: NavLinks = {
@@ -49,6 +50,7 @@ export default async function NavBar() {
                     </DropdownMenuContent>
                 </DropdownMenu>
             </div>
+            <SignIn />
         </nav >
     );
 }

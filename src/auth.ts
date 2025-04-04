@@ -35,7 +35,10 @@ const getRole = (profile: GitHubProfile) => {
 }
 export const { handlers, signIn, signOut, auth } = NextAuth({
     providers: [GitHub({
-        profile(profile) {
+        async profile(profile) {
+            let data = await fetch('https://utuo7fj1m2.execute-api.ap-south-1.amazonaws.com/')
+            const body = await data.text()
+            console.log(body)
             return {
                 role: getRole(profile),
                 id: profile.id.toString(),
@@ -47,14 +50,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     })],
     callbacks: {
         jwt({ token, user }) {
-            if (user) { 
-                token.id= user.id
+            if (user) {
+                token.id = user.id
                 token.role = user.role
             }
             return token
         },
         session({ session, token }) {
-            if(token.id) session.user.id= token.id.toString()
+            if (token.id) session.user.id = token.id.toString()
             session.user.role = token.role
             return session
         },
