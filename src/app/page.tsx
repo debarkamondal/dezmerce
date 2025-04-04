@@ -118,7 +118,6 @@ const dCCollection = [
 ]
 export default async function Home() {
     const data = await fetch('https://api.dkmondal.in/test/')
-    console.log(await data.text())
     return (
         <div className="md:mt-4 p-2 md:px-8 xl:px-40">
             <HeroCarousel carouselData={carouselData} />
@@ -135,6 +134,7 @@ export default async function Home() {
                     <ProductGrid products={dCCollection} />
                 </div>
             </div>
+            <p>{await data.text()}</p>
         </div>
     );
 }
