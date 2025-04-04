@@ -117,7 +117,7 @@ const dCCollection = [
     }
 ]
 export default async function Home() {
-    const data = await fetch('https://utuo7fj1m2.execute-api.ap-south-1.amazonaws.com/')
+    const data = await fetch('api.dkmondal.in/test/')
     console.log(await data.text())
     return (
         <div className="md:mt-4 p-2 md:px-8 xl:px-40">
