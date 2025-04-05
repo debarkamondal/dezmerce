@@ -1,6 +1,7 @@
 import NextAuth, { DefaultSession } from "next-auth"
-import GitHub, { GitHubProfile } from "next-auth/providers/github"
+import GitHub from "next-auth/providers/github"
 import { } from "next-auth/jwt"
+import { cookies } from "next/headers";
 
 declare module "next-auth/jwt" {
     interface JWT {
@@ -28,19 +29,29 @@ declare module "next-auth" {
         } & DefaultSession['user']
     }
 }
+const setCookie = async (cookie: Array<string>) => {
+    const cookieStore = await cookies()
+    cookieStore.set(cookie[0], cookie[1], {
+        httpOnly: true,
+        secure: true
+    })
 
-const getRole = (profile: GitHubProfile) => {
-    if (profile.email === 'debarkamondal@gmail.com') return "admin"
-    return "user"
+
 }
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
     providers: [GitHub({
         async profile(profile) {
-            const data = await fetch('https://api.dkmondal.in/')
-            const body = await data.text()
-            console.log(body)
+            const data = await fetch('https://api.dkmondal.in/test/admin/getAuth', {
+                method: "POST",
+                body: JSON.stringify({ email: profile.email })
+            })
+            let cookie: string | null | undefined = data.headers.get('Set-Cookie')
+            const body = await data.json();
+            cookie = cookie?.substring(cookie?.indexOf("=") + 1)
+            setCookie(['auth', cookie ?? ""])
             return {
-                role: getRole(profile),
+                role: body.role,
                 id: profile.id.toString(),
                 name: profile.name,
                 email: profile.email,

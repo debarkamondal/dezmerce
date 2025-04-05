@@ -6,9 +6,18 @@ import {
     CarouselNext,
     CarouselPrevious,
 } from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
 export default function ImageCarousel({ imageUrls }: { imageUrls: string[] }) {
+
     return (
-        <Carousel className="text-center mx-14 max-w-80">
+        <Carousel
+            plugins={[Autoplay({
+                delay: 2000
+            })]}
+            className="text-center mx-14 max-w-80"
+            opts={{
+                loop: true
+            }}>
             <CarouselContent>
                 {imageUrls.map((image, index) => {
                     return (
