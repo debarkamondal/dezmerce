@@ -64,7 +64,6 @@ export default async function Product({
                         title: data.title,
                         price: data.price,
                         image: data.thumbnail,
-                        url: `/products/${id}`
                     }} />
                     <DeliveryBox defaultDelivery={data.defaultDelivery} />
                     <VariantSelector variants={data.variants} />

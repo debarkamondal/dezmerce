@@ -2,12 +2,19 @@ import NextAuth, { DefaultSession } from "next-auth"
 import GitHub from "next-auth/providers/github"
 import { } from "next-auth/jwt"
 import { cookies } from "next/headers";
+import { decode } from "jsonwebtoken";
 
 declare module "next-auth/jwt" {
     interface JWT {
         role?: string,
         id?: string
     }
+}
+
+type authCookieType={
+    email: string,
+    role: string,
+    iat: number
 }
 
 declare module "next-auth" {
@@ -29,9 +36,9 @@ declare module "next-auth" {
         } & DefaultSession['user']
     }
 }
-const setCookie = async (cookie: Array<string>) => {
+const setCookie = async (name: string, cookie: string) => {
     const cookieStore = await cookies()
-    cookieStore.set(cookie[0], cookie[1], {
+    cookieStore.set(name, cookie, {
         httpOnly: true,
         secure: true
     })
@@ -42,16 +49,17 @@ const setCookie = async (cookie: Array<string>) => {
 export const { handlers, signIn, signOut, auth } = NextAuth({
     providers: [GitHub({
         async profile(profile) {
-            const data = await fetch('https://api.dkmondal.in/test/admin/getAuth', {
+            const data = await fetch(`https://${process.env.BACKEND_URL}/${process.env.STAGE}/signin`, {
                 method: "POST",
                 body: JSON.stringify({ email: profile.email })
             })
-            let cookie: string | null | undefined = data.headers.get('Set-Cookie')
-            const body = await data.json();
-            cookie = cookie?.substring(cookie?.indexOf("=") + 1)
-            setCookie(['auth', cookie ?? ""])
+            let cookie: string | null = data.headers.get('Set-Cookie')
+            if (!cookie) return new Error("backend responded with no cookie")
+            cookie = cookie?.substring(cookie.indexOf("=") + 1, cookie.indexOf(";"))
+            setCookie('auth', cookie)
+            const decodedCookie = decode(cookie) as authCookieType 
             return {
-                role: body.role,
+                role: decodedCookie.role ?? "user",
                 id: profile.id.toString(),
                 name: profile.name,
                 email: profile.email,

@@ -5,12 +5,13 @@ import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import Cart from "@/components/Cart";
 import { CartProvider } from "@/components/providers/CartProvider";
+import { SessionProvider } from "next-auth/react";
 
 const alexBrush = Alex_Brush({
     variable: "--font-alex-brush",
     weight: "400",
     style: "normal",
-    subsets:["latin"]
+    subsets: ["latin"]
 })
 
 
@@ -29,14 +30,16 @@ export default function RootLayout({
             <body
                 className={`${alexBrush.variable} antialiased flex flex-col text-primary`}
             >
-                <CartProvider>
+                <SessionProvider>
+                    <CartProvider>
                         <NavBar />
                         <div className="grow p-2 md:px-8 xl:px-40">
                             {children}
                         </div>
                         <Footer />
                         <Cart />
-                </CartProvider>
+                    </CartProvider>
+                </SessionProvider>
             </body>
         </html >
     );

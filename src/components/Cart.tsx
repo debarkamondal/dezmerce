@@ -29,7 +29,7 @@ const Cart = () => {
                 <DropdownMenuLabel className="text-center">Cart</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 {cart?.map((item) =>
-                    <Link href={item.url} key={item.id}>
+                    <Link href={`/products/${item.id}`} key={item.id}>
                         <DropdownMenuItem className="flex">
                             <Image src={item.image} className="size-24 object-contain" height={300} width={200} alt={`${item.title} image`} />
                             <div>
