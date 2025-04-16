@@ -1,6 +1,6 @@
 'use server'
 import { cookies } from 'next/headers'
-import { cartItem } from './types'
+import { CartItem, Product } from './types'
 
 export const getCart = async () => {
     const cookieStore = await cookies()
@@ -18,9 +18,8 @@ export const getCart = async () => {
     }
 }
 
-export const setCart = async (cart: cartItem[]) => {
+export const setCart = async (cart: CartItem[]) => {
     const cookieStore = await cookies()
-    console.log(cart)
     const data = await fetch(`https://api.dkmondal.in/test/cart`,
         {
             headers: {
@@ -33,3 +32,16 @@ export const setCart = async (cart: cartItem[]) => {
     return 'test'
 }
 
+export const addProduct = async (product: Partial<Product>)=>{
+
+    const cookieStore = await cookies()
+    const data = await fetch(`https://api.dkmondal.in/test/admin/products`,
+        {
+            headers: {
+                Authorization: cookieStore.get('auth')?.value as string
+            },
+            method: 'POST',
+            body: JSON.stringify(product)
+        })
+    return await data.json()
+}

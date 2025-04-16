@@ -14,6 +14,11 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
+import { Product } from "@/lib/types"
+import { addProduct } from "@/lib/actions"
+import { useState } from "react"
+import Image from "next/image"
+import { redirect } from "next/navigation"
 
 const formSchema = z.object({
     title: z.string().min(8, {
@@ -26,11 +31,17 @@ const formSchema = z.object({
     }),
     category: z.string(),
     gender: z.enum(['male', 'female']),
-    price: z.number().min(0),
+    price: z.coerce.number().min(0, { message: "Invalid Price" }),
+    images: z
+        .instanceof(FileList)
+        .refine((files) => files.length > 1, "Atleast 2 images required."),
+    thumbnail: z.instanceof(FileList)
 })
 
 export function ProductForm() {
+
     // 1. Define your form.
+    const [isLoading, setIsLoading] = useState(false)
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -38,18 +49,43 @@ export function ProductForm() {
             description: "",
             category: "",
             gender: "male",
-            price: 0
+            price: 0,
         },
     })
+    const imagesRef = form.register("images");
+    const thumbnailRef = form.register("thumbnail");
 
     // 2. Define a submit handler.
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values)
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        setIsLoading(true)
+        let payload: Partial<Product> = {
+            title: values.title,
+            price: values.price,
+            gender: values.gender,
+            category: values.category,
+            description: values.description,
+            images: [],
+            thumbnail: values.thumbnail[0].name
+        }
+        for (const image of values.images) {
+            payload = { ...payload, images: payload.images ? [...payload.images, image.name] : [image.name] }
+        }
+        const product = await addProduct(payload)
+        const thumbnailRes = await fetch(product.thumbnail, { method: 'PUT', headers: { 'Content-Type': values.thumbnail[0].type }, body: values.thumbnail[0] })
+        // let imageRes = preSignedUrls.imageUrls.map(async (imageUrl: string) => { return await fetch(preSignedUrls.thumbnail, { method: 'PUT', headers: { 'Content-Type': values.thumbnail[0].type }, body: imageUrl }) })
+        // imageRes = await Promise.all(imageRes)
+        let imageRes = [];
+        for (let i = 0; i < product.imageUrls.length; i++) {
+            imageRes.push(await fetch(product.imageUrls[i], { method: 'PUT', headers: { 'Content-Type': values.images[i].type }, body: values.images[i] }))
+
+        }
+        imageRes = imageRes.filter((res) => res.status === 200)
+        if (imageRes.length === values.images.length && thumbnailRes.status === 200) redirect(`/products/${product.id}`)
     }
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                 <FormField
                     control={form.control}
                     name="title"
@@ -65,12 +101,25 @@ export function ProductForm() {
                 />
                 <FormField
                     control={form.control}
+                    name="category"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Category</FormLabel>
+                            <FormControl>
+                                <Input placeholder="Enter category" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
                     name="price"
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel>Price</FormLabel>
                             <FormControl>
-                                <Input placeholder="Enter price" {...field} />
+                                <Input placeholder="Enter price" {...field} type="number" />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -94,7 +143,7 @@ export function ProductForm() {
                     name="gender"
                     render={({ field }) => (
                         <FormItem className="space-y-3">
-                            <FormLabel>Notify me about...</FormLabel>
+                            <FormLabel>Select Gender:</FormLabel>
                             <FormControl>
                                 <RadioGroup
                                     onValueChange={field.onChange}
@@ -123,7 +172,46 @@ export function ProductForm() {
                         </FormItem>
                     )}
                 />
-                <Button type="submit">Submit</Button>
+                <FormField
+                    control={form.control}
+                    name="thumbnail"
+                    render={() => (
+                        <FormItem>
+                            <FormLabel>Product hero image</FormLabel>
+                            <FormControl>
+                                <div className="flex flex-col gap-2">
+                                    <Input
+                                        type="file"
+                                        {...thumbnailRef}
+                                    />
+                                </div>
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="images"
+                    render={() => (
+                        <FormItem>
+                            <FormLabel>Product Images</FormLabel>
+                            <FormControl>
+                                <div className="flex flex-col gap-2">
+                                    <Input
+                                        type="file"
+                                        {...imagesRef}
+                                        multiple
+                                    />
+                                </div>
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <div className="flex justify-center">
+                    <Button type="submit" className="w-3/4 my-2">{isLoading ? <Image src="/spinner.svg" height={20} width={20} alt="loading spinner" className="invert" /> : "Add Product"}</Button>
+                </div>
             </form>
         </Form>
     )

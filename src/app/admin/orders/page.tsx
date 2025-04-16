@@ -14,7 +14,6 @@ const chartData = [
 const AdminPage = async () => {
     const session = await auth()
     if (session?.user.role !== 'admin') redirect("/api/auth/signin")
-    // const cookie= (await cookies()).get('auth')
 
     return (
         <main>

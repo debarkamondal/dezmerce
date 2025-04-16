@@ -9,6 +9,8 @@ import { Chart } from "@/components/Chart"
 import { Button } from "@/components/ui/button"
 import { ProductForm } from "@/components/forms/ProductForm"
 import { Plus } from "lucide-react"
+import { auth } from "@/auth"
+import { redirect } from "next/navigation"
 
 const chartData = [
     { category: "T-Shirt", orders: 275, fill: "var(--color-tshirt)" },
@@ -17,7 +19,9 @@ const chartData = [
     { category: "Top", orders: 173, fill: "var(--color-top)" },
     { category: "Shoes", orders: 190, fill: "var(--color-shoes)" },
 ]
-const adminProducts = () => {
+const adminProducts = async() => {
+    const session = await auth()
+    if (session?.user.role !== 'admin') redirect("/api/auth/signin")
     return (
         <main>
             <div className="flex justify-between mx-4">
@@ -26,7 +30,7 @@ const adminProducts = () => {
                     <DialogTrigger asChild>
                         <Button>Add <Plus /></Button>
                     </DialogTrigger>
-                    <DialogContent>
+                    <DialogContent aria-describedby="add product form">
                         <DialogHeader>
                             <DialogTitle>Add Product</DialogTitle>
                         </DialogHeader>
