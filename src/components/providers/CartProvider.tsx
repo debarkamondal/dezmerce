@@ -1,6 +1,6 @@
 'use client'
 import { getCart } from "@/lib/actions";
-import { cartItem } from "@/lib/types";
+import { CartItem } from "@/lib/types";
 import { User } from "next-auth";
 import { useSession } from "next-auth/react";
 import { Dispatch, ReactNode, createContext, useContext, useEffect, useReducer } from "react";
@@ -8,18 +8,19 @@ import { Dispatch, ReactNode, createContext, useContext, useEffect, useReducer }
 
 type actionType = {
     type: 'add' | 'delete' | 'increase' | 'initiate',
-    item?: cartItem,
-    initialState?: cartItem[],
+    item?: CartItem,
+    initialState?: CartItem[],
     user?: User
 }
 
 const CartDispatchContext = createContext<Dispatch<actionType> | undefined>(undefined)
-const CartContext = createContext<Array<cartItem> | undefined>(undefined)
+const CartContext = createContext<Array<CartItem> | undefined>(undefined)
 
 export function CartProvider({ children }: { children: ReactNode }) {
     const { data } = useSession()
     const [cart, dispatch] = useReducer(reducer, [])
     useEffect(() => {
+        console.log('rerendred')
         if (!data?.user && typeof window !== undefined) {
             const initialState = localStorage.getItem('cart')
             if (initialState) dispatch({ type: 'initiate', initialState: JSON.parse(initialState!) })
@@ -38,9 +39,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
     )
 }
-const reducer = (cart: Array<cartItem> | undefined, action: actionType) => {
+const reducer = (cart: Array<CartItem> | undefined, action: actionType) => {
     if (cart === undefined) throw new Error("Cart context error")
-    let temp: cartItem[]
+    let temp: CartItem[]
     switch (action.type) {
         case 'add':
             if (action.item?.qty === 0) return [...cart, { ...action.item, qty: 1 }]

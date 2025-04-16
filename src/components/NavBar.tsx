@@ -8,15 +8,22 @@ import {
 import Link from "next/link";
 import SearchBar from "./SearchBar";
 import SignIn from "./SignIn";
+import { auth } from "@/auth";
 
 type NavLinks = { [key: string]: string }
-const navLinks: NavLinks = {
+const userLinks: NavLinks = {
     "products": "/products",
     "about": "/about",
     "support": "/support"
 }
+const adminLinks: NavLinks = {
+    "products": "/admin/products",
+    "orders": "/admin/orders",
+}
 
 export default async function NavBar() {
+    const session = await auth()
+    const navLinks = session?.user.role === 'admin'? adminLinks:  userLinks
     return (
         <nav className="p-2 flex justify-between items-center gap-4">
             <Link href={"/"}>
@@ -47,10 +54,13 @@ export default async function NavBar() {
                                 </Link>
                             </DropdownMenuItem>
                         )}
+                        <DropdownMenuItem>
+                            {!session && <SignIn />}
+                        </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
+                {!session?.user && <SignIn className="hidden lg:block" />}
             </div>
-            <SignIn />
         </nav >
     );
 }

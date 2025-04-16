@@ -1,3 +1,4 @@
+'use client'
 import { Button } from "@/components/ui/button";
 import {
     Carousel,
@@ -9,6 +10,7 @@ import {
 import { cn } from "@/lib/utils";
 import { ChevronRight } from "lucide-react";
 import Image from "next/image";
+import Autoplay from 'embla-carousel-autoplay'
 
 type CarouselData = {
     hook: string,
@@ -20,7 +22,11 @@ type CarouselData = {
 
 const HeroCarousel = (props: { carouselData: CarouselData[] }) => {
     return (
-        <Carousel>
+        <Carousel plugins={[
+            Autoplay({
+                delay: 3000,
+            })
+        ]}>
             <CarouselContent>
                 {props.carouselData.map((item) => {
                     return (

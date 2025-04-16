@@ -16,7 +16,7 @@ import { useRouter } from "next/navigation";
 const SearchBar = () => {
     const router = useRouter()
     const [isDialogOpen, setIsDialogOpen] = useState(false)
-    const action = async (_: string|undefined, formData: FormData) => {
+    const action = async (_: string | undefined, formData: FormData) => {
         const searchString = formData.get('search') as string
         setIsDialogOpen(!isDialogOpen)
         router.push(`/results?search=${searchString.replaceAll(' ', '+')}`)
@@ -28,7 +28,8 @@ const SearchBar = () => {
             <Dialog open={isDialogOpen} onOpenChange={() => setIsDialogOpen(!isDialogOpen)}>
                 <DialogTrigger className="md:hidden">
                     <SearchIcon />
-                </DialogTrigger> <DialogContent>
+                </DialogTrigger>
+                <DialogContent>
                     <DialogHeader>
                         <DialogTitle hidden>Search</DialogTitle>
                         <DialogDescription hidden>Search anything on the website!</DialogDescription>
