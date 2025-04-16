@@ -42,6 +42,7 @@ export function ProductForm() {
 
     // 1. Define your form.
     const [isLoading, setIsLoading] = useState(false)
+    const [productId, setProductId] = useState("")
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -80,7 +81,10 @@ export function ProductForm() {
 
         }
         imageRes = imageRes.filter((res) => res.status === 200)
-        if (imageRes.length === values.images.length && thumbnailRes.status === 200) redirect(`/products/${product.id}`)
+        if (imageRes.length === values.images.length && thumbnailRes.status === 200) {
+            setProductId(product.id)
+            setIsLoading(false)
+        }
     }
 
     return (
@@ -209,9 +213,11 @@ export function ProductForm() {
                         </FormItem>
                     )}
                 />
-                <div className="flex justify-center">
+                <div className="flex justify-center items-center gap-2">
                     <Button type="submit" className="w-3/4 my-2">{isLoading ? <Image src="/spinner.svg" height={20} width={20} alt="loading spinner" className="invert" /> : "Add Product"}</Button>
+                    <Button type="button" variant={"outline"} className="w-1/4" onClick={() => form.reset()}>Reset</Button>
                 </div>
+                {productId && <Button className="w-full" onClick={()=>redirect(`/products/${productId}`)}>Go to Product</Button>}
             </form>
         </Form>
     )
