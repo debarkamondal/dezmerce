@@ -1,16 +1,15 @@
 'use client'
 import { buttonVariants } from "@/components/ui/button";
 import { useCartContext, useDispatchContext } from "@/components/providers/CartProvider";
-import { Product } from "@/lib/types";
+import { CartItem} from "@/lib/types";
 import { MinusIcon, PlusIcon } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { setCart } from "@/lib/actions";
-import { cartItem } from "../../types";
-const AddToCartButton = ({ product }: { product: Product }) => {
+const AddToCartButton = ({ product }: { product: Omit<CartItem, 'qty'> }) => {
     const dispatch = useDispatchContext()
     const cart = useCartContext()
     const user = useSession()
-    let tempCart: cartItem[] = []
+    let tempCart: CartItem[] = []
     let item
     if (cart) item = cart.filter((item) => item.id === product.id)[0]
     if (!item) item = { ...product, qty: 0 }

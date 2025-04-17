@@ -7,7 +7,7 @@ import {
     CarouselPrevious,
 } from "@/components/ui/carousel";
 
-export default function ImageCarousel({ imageUrls }: { imageUrls: string[] }) {
+export default function ImageCarousel({ imageUrls, category }: { imageUrls: string[], category: string }) {
     return (
         <Carousel
             className="text-center mx-14 max-w-80"
@@ -19,7 +19,7 @@ export default function ImageCarousel({ imageUrls }: { imageUrls: string[] }) {
                     return (
                         <CarouselItem key={index}>
                             <Image
-                                src={image}
+                                src={`${process.env.NEXT_PUBLIC_S3_URL}/${category}/${image}`}
                                 alt={`product-image-${index}`}
                                 width={300}
                                 height={200}
