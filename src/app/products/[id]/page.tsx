@@ -16,7 +16,7 @@ export default async function Product({
     params: Promise<{ id: string }>;
 }) {
     const { id } = await params
-    const testData = await fetch(`https://${process.env.NEXT_PUBLIC_BACKEND_URL}/${process.env.STAGE}/products/${id}`)
+    const testData = await fetch(`https://${process.env.BACKEND_URL}/${process.env.STAGE}/products/${id}`)
     const product: Product = await testData.json()
     const data: Product = {
         id: product.id,
@@ -39,7 +39,7 @@ export default async function Product({
     return (
         <main>
             <div className="flex flex-col items-center md:items-start md:flex-row md:gap-20 md:mt-8 text-foreground">
-                <ImageCarousel category={data.category} imageUrls={[data.thumbnail, ...data.images]} />
+                <ImageCarousel category={data.category} id={data.id} imageUrls={[data.thumbnail, ...data.images]} />
                 <div className="text-center md:text-left flex flex-col items-center md:items-start">
                     <h1 className="font-medium te.xt-lg">{data.title}</h1>
                     <span className="text-xs text-gray-500">

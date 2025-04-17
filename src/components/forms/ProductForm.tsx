@@ -73,17 +73,15 @@ export function ProductForm() {
         }
         const product = await addProduct(payload)
         const thumbnailRes = await fetch(product.thumbnail, { method: 'PUT', headers: { 'Content-Type': values.thumbnail[0].type }, body: values.thumbnail[0] })
-        // let imageRes = preSignedUrls.imageUrls.map(async (imageUrl: string) => { return await fetch(preSignedUrls.thumbnail, { method: 'PUT', headers: { 'Content-Type': values.thumbnail[0].type }, body: imageUrl }) })
-        // imageRes = await Promise.all(imageRes)
         let imageRes = [];
         for (let i = 0; i < product.imageUrls.length; i++) {
             imageRes.push(await fetch(product.imageUrls[i], { method: 'PUT', headers: { 'Content-Type': values.images[i].type }, body: values.images[i] }))
 
         }
         imageRes = imageRes.filter((res) => res.status === 200)
+        setIsLoading(false)
         if (imageRes.length === values.images.length && thumbnailRes.status === 200) {
-            setProductId(product.id)
-            setIsLoading(false)
+            setProductId(values.category + "-" + product.id)
         }
     }
 
@@ -214,10 +212,10 @@ export function ProductForm() {
                     )}
                 />
                 <div className="flex justify-center items-center gap-2">
-                    <Button type="submit" className="w-3/4 my-2">{isLoading ? <Image src="/spinner.svg" height={20} width={20} alt="loading spinner" className="invert" /> : "Add Product"}</Button>
+                    <Button type="submit" disabled={isLoading} className="w-3/4 my-2">{isLoading ? <Image src="/spinner.svg" height={20} width={20} alt="loading spinner" className="invert" /> : "Add Product"}</Button>
                     <Button type="button" variant={"outline"} className="w-1/4" onClick={() => form.reset()}>Reset</Button>
                 </div>
-                {productId && <Button className="w-full" onClick={()=>redirect(`/products/${productId}`)}>Go to Product</Button>}
+                {productId && <Button type="button" className="w-full" onClick={() => redirect(`/products/${productId}`)}>Go to Product</Button>}
             </form>
         </Form>
     )
