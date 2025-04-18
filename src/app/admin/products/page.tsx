@@ -30,7 +30,7 @@ const adminProducts = async() => {
                     <DialogTrigger asChild>
                         <Button>Add <Plus /></Button>
                     </DialogTrigger>
-                    <DialogContent aria-describedby="add product form">
+                    <DialogContent aria-describedby="add product form" className="max-h-5/6 overflow-scroll">
                         <DialogHeader>
                             <DialogTitle>Add Product</DialogTitle>
                         </DialogHeader>

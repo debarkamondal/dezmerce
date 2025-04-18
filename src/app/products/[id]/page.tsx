@@ -30,11 +30,7 @@ export default async function Product({
         images: product.images,
         variants: [["4 MB", "/products/1"], ["8 MB", "/products/2"], ["16 MB", "/products/3"], ["32 MB", "/products/4"], ["64 MB", "/products/5"]],
         description: product.description,
-        specs: {
-            size: "xl",
-            fabric: "cotton",
-            color: "red"
-        }
+        specs: product.specs
     };
     return (
         <main>
