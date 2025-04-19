@@ -7,7 +7,7 @@ import {
     CarouselPrevious,
 } from "@/components/ui/carousel";
 
-export default function ImageCarousel({ imageUrls, category, id, className }: { imageUrls: string[], category: string, id: string, className:string }) {
+export default function ImageCarousel({ imageUrls, category, id, className }: { imageUrls: string[], category: string, id: string, className: string }) {
     return (
         <Carousel
             className={className}
@@ -29,8 +29,8 @@ export default function ImageCarousel({ imageUrls, category, id, className }: { 
                     );
                 })}
             </CarouselContent>
-            <CarouselPrevious className="hidden md:flex ml-4"/>
-            <CarouselNext className="hidden md:flex mr-4"/>
+            <CarouselPrevious className="hidden md:flex md:ml-2 xl:ml-4" />
+            <CarouselNext className="hidden md:flex md:ml-2 xl:mr-4" />
         </Carousel>
     )
 }

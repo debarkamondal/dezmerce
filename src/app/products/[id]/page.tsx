@@ -34,7 +34,7 @@ export default async function Product({
     };
     return (
         <main className="relative md:grid md:grid-cols-2 md:gap-8">
-            <ImageCarousel className="md:sticky md:-mt-8 mx-4 md:self-center md:w-4/5" category={data.category} id={data.id} imageUrls={[data.thumbnail, ...data.images]} />
+            <ImageCarousel className="md:sticky md:top-20 md:self-start md:mt-8 mx-4 md:w-4/5" category={data.category} id={data.id} imageUrls={[data.thumbnail, ...data.images]} />
             <div className="text-center md:text-left flex flex-col items-center md:items-start text-sm mt-4">
                 <h1 className="font-medium text-lg">{data.title}</h1>
                 <span className="text-xs text-gray-500">
