@@ -98,7 +98,7 @@ export function ProductForm() {
         imageRes = imageRes.filter((res) => res.status === 200)
         setIsLoading(false)
         if (imageRes.length === values.images.length && thumbnailRes.status === 200) {
-            setProductId(values.category + "-" + product.id)
+            setProductId(product.id)
         }
     }
 

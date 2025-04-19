@@ -33,42 +33,38 @@ export default async function Product({
         specs: product.specs
     };
     return (
-        <main>
-            <div className="flex flex-col items-center md:items-start md:flex-row md:gap-20 md:mt-8 text-foreground">
-                <ImageCarousel category={data.category} id={data.id} imageUrls={[data.thumbnail, ...data.images]} />
-                <div className="text-center md:text-left flex flex-col items-center md:items-start">
-                    <h1 className="font-medium te.xt-lg">{data.title}</h1>
-                    <span className="text-xs text-gray-500">
-                        {data.ratings[0]} stars | {data.ratings[1]} reviews
-                    </span>
-                    <span className="font-bold">&#8377; {data.price}</span>
-                    <AddToCartButton product={{
-                        id: data.id,
-                        title: data.title,
-                        price: data.price,
-                        image: data.thumbnail,
-                    }} />
-                    <DeliveryBox defaultDelivery={data.defaultDelivery} />
-                    <VariantSelector variants={data.variants} />
-                </div>
-            </div>
-            <div className="m-2">
+        <main className="relative md:grid md:grid-cols-2 md:gap-8">
+            <ImageCarousel className="md:sticky md:-mt-8 mx-4 md:self-center md:w-4/5" category={data.category} id={data.id} imageUrls={[data.thumbnail, ...data.images]} />
+            <div className="text-center md:text-left flex flex-col items-center md:items-start text-sm mt-4">
+                <h1 className="font-medium text-lg">{data.title}</h1>
+                <span className="text-xs text-gray-500">
+                    {data.ratings[0]} stars | {data.ratings[1]} reviews
+                </span>
+                <span className="font-bold">&#8377; {data.price}</span>
+                <AddToCartButton product={{
+                    id: data.id,
+                    title: data.title,
+                    price: data.price,
+                    image: data.thumbnail,
+                }} />
+                <DeliveryBox defaultDelivery={data.defaultDelivery} />
+                <VariantSelector variants={data.variants} />
                 <h2 className="font-semibold text-lg">Product Infomation</h2>
-                <Table className="my-2 max-w-96 mx-auto md:ml-16">
+                <Table className="my-2 max-w-96 mx-auto text-center">
                     <TableBody>
                         {Object.keys(data.specs).map((spec: string, index: number) => {
                             return (
                                 <TableRow key={index}>
                                     {index === 0 && <TableCell className="rounded-tl-md bg-border">{spec}</TableCell>}
                                     {index != Object.keys(data.specs).length - 1 && index != 0 && <TableCell className="bg-border">{spec}</TableCell>}
-                                    {index === Object.keys(data.specs).length - 1 && <TableCell className="rounded-bl-md bg-border">{spec}</TableCell>}
-                                    <TableCell>{data.specs[spec]}</TableCell>
+                                    {index === Object.keys(data.specs).length - 1 && Object.keys(data.specs).length != 1 && <TableCell className="rounded-bl-md bg-border">{spec}</TableCell>}
+                                    <TableCell className="w-1/2">{data.specs[spec]}</TableCell>
                                 </TableRow>
                             )
                         })}
                     </TableBody>
                 </Table>
-                <p className="m-2 text-justify">{data.description}</p>
+                <p className="text-left mx-2 leading-6">{data.description}</p>
             </div>
         </main>
     );
