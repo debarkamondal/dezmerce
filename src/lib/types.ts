@@ -8,7 +8,7 @@ export type CartItem = {
 export type Product = {
     category: string;
     id: string;
-    gender:string;
+    gender: "male"| "female"
     thumbnail: string;
     title: string;
     defaultDelivery: string;

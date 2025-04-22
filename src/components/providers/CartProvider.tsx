@@ -20,7 +20,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
     const { data } = useSession()
     const [cart, dispatch] = useReducer(reducer, [])
     useEffect(() => {
-        console.log('rerendred')
         if (!data?.user && typeof window !== undefined) {
             const initialState = localStorage.getItem('cart')
             if (initialState) dispatch({ type: 'initiate', initialState: JSON.parse(initialState!) })

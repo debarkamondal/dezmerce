@@ -17,13 +17,13 @@ export default function ImageCarousel({ imageUrls, category, id, className }: { 
             <CarouselContent>
                 {imageUrls.map((image, index) => {
                     return (
-                        <CarouselItem key={index} className="h-full">
+                        <CarouselItem key={index} className="flex">
                             <Image
                                 src={`${process.env.NEXT_PUBLIC_S3_URL}/products/${category}/${id}/${image}`}
                                 alt={`product-image-${index}`}
                                 width={300}
                                 height={200}
-                                className="size-auto mx-auto rounded-md"
+                                className="size-auto m-auto rounded-md"
                             />
                         </CarouselItem>
                     );

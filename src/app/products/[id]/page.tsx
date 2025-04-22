@@ -16,7 +16,7 @@ export default async function Product({
     params: Promise<{ id: string }>;
 }) {
     const { id } = await params
-    const testData = await fetch(`https://${process.env.BACKEND_URL}/${process.env.STAGE}/products/${id}`)
+    const testData = await fetch(`https://${process.env.NEXT_PUBLIC_BACKEND_URL}/${process.env.NEXT_PUBLIC_STAGE}/products/${id}`)
     const product: Product = await testData.json()
     const data: Product = {
         id: product.id,
@@ -50,7 +50,7 @@ export default async function Product({
                 <DeliveryBox defaultDelivery={data.defaultDelivery} />
                 <VariantSelector variants={data.variants} />
                 <h2 className="font-semibold text-lg">Product Infomation</h2>
-                <Table className="my-2 max-w-96 mx-auto text-center">
+                <Table className="my-4 md:my-8 max-w-96 mx-auto text-center">
                     <TableBody>
                         {Object.keys(data.specs).map((spec: string, index: number) => {
                             return (

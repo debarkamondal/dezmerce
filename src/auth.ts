@@ -55,7 +55,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     callbacks: {
         async jwt({ token }) {
             try {
-                const data = await fetch(`https://${process.env.BACKEND_URL}/${process.env.STAGE}/signin`, {
+                const data = await fetch(`https://${process.env.NEXT_PUBLIC_BACKEND_URL}/${process.env.NEXT_PUBLIC_STAGE}/signin`, {
                     method: "POST",
                     body: JSON.stringify({ email: token.email })
                 })
