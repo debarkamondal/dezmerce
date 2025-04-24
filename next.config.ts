@@ -13,7 +13,7 @@ const nextConfig: NextConfig = {
             },
             {
                 protocol: "https",
-                hostname: "dezmercebackendstack-test-dezmercebackendbucket8d6-7xrgcespfc7r.s3.ap-south-1.amazonaws.com"
+                hostname: process.env.NEXT_PUBLIC_S3_URL as string
             }
         ],
     },
