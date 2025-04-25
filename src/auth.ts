@@ -71,7 +71,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 if (decodedToken) token.role = decodedToken.role
                 return token
 
-            } catch (e) {
+            } catch {
                 return token
             }
         },

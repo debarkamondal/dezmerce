@@ -31,12 +31,12 @@ export default function RootLayout({
                 className={`${alexBrush.variable} antialiased flex flex-col text-primary`}
             >
                 <SessionProvider>
+                    <NavBar />
+                    <div className="grow p-2 md:px-8 xl:px-40">
+                        {children}
+                    </div>
+                    <Footer />
                     <CartProvider>
-                        <NavBar />
-                        <div className="grow p-2 md:px-8 xl:px-40">
-                            {children}
-                        </div>
-                        <Footer />
                         <Cart />
                     </CartProvider>
                 </SessionProvider>

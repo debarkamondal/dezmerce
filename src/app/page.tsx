@@ -2,6 +2,7 @@ import HeroCarousel from "@/components/HeroCarousel";
 import ProductGrid from "@/components/ProductGrid";
 import Image from "next/image";
 
+// Explicitly mark this page for static generation
 
 const carouselData = [
     {
@@ -116,7 +117,7 @@ const dCCollection = [
         price: 2999
     }
 ]
-export default async function Home() {
+export default function Home() {
     return (
         <div className="md:mt-4 p-2 md:px-8 xl:px-40">
             <HeroCarousel carouselData={carouselData} />

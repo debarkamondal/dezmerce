@@ -6,6 +6,7 @@ import { auth } from "@/auth"
 import { redirect } from "next/navigation"
 import Image from "next/image"
 import Link from "next/link"
+import { Dialog, DialogTitle, DialogContent, DialogTrigger, DialogHeader } from "@/components/ui/dialog"
 
 const chartData = [
     { category: "T-Shirt", orders: 275, fill: "var(--color-tshirt)" },
@@ -31,9 +32,9 @@ const adminProducts = async () => {
         <main>
             <div className="flex justify-between items-center mx-4">
                 <h1 className="text-2xl md:text-4xl font-semibold my-2 md:my-4">Products</h1>
-                <ProductForm title="Add Product">
-                    <Button>Add <Plus /></Button>
-                </ProductForm>
+                <Button asChild>
+                    <Link href="/admin/products/create" >Add <Plus /></Link>
+                </Button>
             </div>
             <div className="mx-2">
                 <Chart title="Inventory" data={chartData} />
@@ -43,16 +44,24 @@ const adminProducts = async () => {
                 const [category, id] = product.sk.split("-")
                 return <div key={id} className="flex gap-2 shadow p-2 rounded-md my-2 min-h-24">
                     <Link href={`/products/${product.sk}`} className="relative flex grow" >
-                        <Image src={`${process.env.NEXT_PUBLIC_S3_URL}/products/${category}/${id}/${product.thumbnail}`} height={300} width={200} alt={`${product.title}-img`} className="size-24 rounded-md object-contain" />
+                        <Image src={`https://${process.env.NEXT_PUBLIC_S3_URL}/products/${category}/${id}/${product.thumbnail}`} height={300} width={200} alt={`${product.title}-img`} className="size-24 rounded-md object-contain" />
                         <div className="m-2 mb-4 grow justify-start flex flex-col">
                             <p className="font-semibold">{product.title}</p>
                             <p className="text-sm font-light capitalize">{}</p>
                             <span className="font-semibold mt-2">&#8377; {product.price}</span>
                         </div>
                     </Link>
-                    <ProductForm id={product.sk} title="Edit Product">
-                        <Button className="self-center cursor-pointer" ><Pencil /></Button>
-                    </ProductForm>
+                    <Dialog>
+                        <DialogTrigger asChild>
+                            <Button className="self-center cursor-pointer" ><Pencil /></Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                            <DialogHeader>
+                                <DialogTitle>Update Product</DialogTitle>
+                            </DialogHeader>
+                            <ProductForm id={product.sk} />
+                        </DialogContent>
+                    </Dialog>
                 </div>
             }
             )}
