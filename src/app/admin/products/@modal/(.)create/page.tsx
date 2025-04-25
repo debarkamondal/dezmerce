@@ -1,27 +1,13 @@
-"use client"
-
-import {
-    Dialog,
-    DialogContent,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@/components/ui/dialog"
-import { useRouter } from "next/navigation"
 import { ProductForm } from "@/components/forms/ProductForm"
+import ProductModal from "./ProductModal"
 
-
-export default function ProductModal() {
-    const router= useRouter()
+const ModalPage = async () => {
+    const res = await fetch(`https://${process.env.NEXT_PUBLIC_BACKEND_URL}/${process.env.NEXT_PUBLIC_STAGE}/categories`, {next: {tags: ['categories']}})
+    const categories = await res.json()
     return (
-        <Dialog open onOpenChange={() => router.back()}>
-            <DialogTrigger hidden>Open</DialogTrigger>
-            <DialogContent aria-describedby="add product form" className="max-h-5/6 overflow-scroll">
-                <DialogHeader>
-                    <DialogTitle>Add Product</DialogTitle>
-                </DialogHeader>
-                <ProductForm  />
-            </DialogContent>
-        </Dialog>
+        <ProductModal>
+            <ProductForm cats={categories}/>
+        </ProductModal>
     )
 }
+export default ModalPage

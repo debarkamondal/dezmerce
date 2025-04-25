@@ -1,7 +1,7 @@
 'use server'
 import { cookies } from 'next/headers'
 import { CartItem, Product } from './types'
-import { revalidatePath } from 'next/cache'
+import { revalidatePath, revalidateTag } from 'next/cache'
 
 export const getCart = async () => {
     const cookieStore = await cookies()
@@ -63,7 +63,8 @@ export const deleteProduct = async (id: string) => {
     console.log(await data.json())
     return
 }
-export const getCategories = async () => {
+
+export const addCategory = async (category: string) => {
 
     const cookieStore = await cookies()
     const data = await fetch(`https://api.dkmondal.in/test/admin/categories`,
@@ -71,9 +72,12 @@ export const getCategories = async () => {
             headers: {
                 Authorization: cookieStore.get('auth')?.value as string
             },
+            method: "POST",
+            body: JSON.stringify({category})
         })
     return await data.json()
 }
 
-export const revalidate = async (path: string) => revalidatePath(path)
 
+export const revalidatepath = async (path: string) => revalidatePath(path)
+export const revalidatetag = async (tag: string) => revalidateTag(tag)

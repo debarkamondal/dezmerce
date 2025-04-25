@@ -25,8 +25,10 @@ type allProduct = {
 const adminProducts = async () => {
     const session = await auth()
     if (session?.user.role !== 'admin') redirect("/api/auth/signin")
-    const temp = await fetch(`https://${process.env.NEXT_PUBLIC_BACKEND_URL}/${process.env.NEXT_PUBLIC_STAGE}/products`, { cache: "reload" })
+    const temp = await fetch(`https://${process.env.NEXT_PUBLIC_BACKEND_URL}/${process.env.NEXT_PUBLIC_STAGE}/products`, { cache: "force-cache" })
     const data = await temp.json()
+    const res = await fetch(`https://${process.env.NEXT_PUBLIC_BACKEND_URL}/${process.env.NEXT_PUBLIC_STAGE}/categories`, {next:{tags: ['categories']}})
+    const categories = await res.json()
 
     return (
         <main>
@@ -59,7 +61,7 @@ const adminProducts = async () => {
                             <DialogHeader>
                                 <DialogTitle>Update Product</DialogTitle>
                             </DialogHeader>
-                            <ProductForm id={product.sk} />
+                            <ProductForm id={product.sk} cats={categories} />
                         </DialogContent>
                     </Dialog>
                 </div>

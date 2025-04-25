@@ -5,6 +5,13 @@ import { useFieldArray, useForm } from "react-hook-form"
 import { z } from "zod"
 import { Button } from "@/components/ui/button"
 import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"
+import {
     Form,
     FormControl,
     FormField,
@@ -15,8 +22,8 @@ import {
 import { Input } from "@/components/ui/input"
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
 import { Product } from "@/lib/types"
-import { addProduct, deleteProduct, getCategories, revalidate } from "@/lib/actions"
-import { ReactNode, useEffect, useState } from "react"
+import { addCategory, addProduct, deleteProduct, revalidatepath, revalidatetag } from "@/lib/actions"
+import { ReactNode, startTransition, useEffect, useOptimistic, useState } from "react"
 import Image from "next/image"
 import { DeleteIcon, Plus } from "lucide-react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
@@ -47,9 +54,12 @@ const formSchema = z.object({
 })
 
 
-export function ProductForm({ id, children }: { title?: string, id?: string, children?: ReactNode }) {
-    const [categories, setCategories] = useState<Array<string>>()
+export function ProductForm({ id, children, cats }: { id?: string, children?: ReactNode, cats: Record<string, string> }) {
     const [isLoading, setIsLoading] = useState(false)
+    const [isDialogOpen, setIsDialogOpen] = useState(false)
+    const [newCategory, setNewCategory] = useState("")
+    const [categories, setCategories] = useOptimistic(Object.keys(cats).filter((e) => e !== 'pk' && e !== "sk"),
+        (currentState, optimisticValue: string[]) => [...currentState, ...optimisticValue])
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -65,8 +75,6 @@ export function ProductForm({ id, children }: { title?: string, id?: string, chi
 
     useEffect(() => {
         async function getData() {
-            const categories = Object.keys(await getCategories()).filter((e) => e !== 'pk' && e !== "sk")
-            setCategories(categories)
             if (id) {
                 const product = await fetch(`https://${process.env.NEXT_PUBLIC_BACKEND_URL}/${process.env.NEXT_PUBLIC_STAGE}/products/${id}`)
                 const data: Product = await product.json()
@@ -125,9 +133,15 @@ export function ProductForm({ id, children }: { title?: string, id?: string, chi
         }
         imageRes = imageRes.filter((res) => res.status === 200)
         setIsLoading(false)
-        revalidate("/admin/products")
+        revalidatepath("/admin/products")
     }
 
+    const handleAddCategory = async () => {
+        startTransition(() => { setCategories([newCategory]) })
+        addCategory(newCategory)
+        revalidatetag("categories")
+        setIsDialogOpen(false)
+    }
     return (
         <Form {...form}>
             {children}
@@ -151,16 +165,32 @@ export function ProductForm({ id, children }: { title?: string, id?: string, chi
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel>Category</FormLabel>
-                            <Select onValueChange={field.onChange} defaultValue={field.value} value={field.value}>
-                                <FormControl>
-                                    <SelectTrigger className="capitalize">
-                                        <SelectValue placeholder={field.value === '' ? "Select Category" : field.value} />
-                                    </SelectTrigger>
-                                </FormControl>
-                                <SelectContent>
-                                    {categories?.map((category) => <SelectItem className="capitalize" key={category} value={category}>{category}</SelectItem>)}
-                                </SelectContent>
-                            </Select>
+                            <div className="flex gap-2">
+                                <Select onValueChange={field.onChange} defaultValue={field.value} value={field.value}>
+                                    <FormControl>
+                                        <SelectTrigger className="capitalize grow">
+                                            <SelectValue placeholder={field.value === '' ? "Select Category" : field.value} />
+                                        </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                        {categories?.map((category) => <SelectItem className="capitalize" key={category} value={category}>{category}</SelectItem>)}
+                                    </SelectContent>
+                                </Select>
+                                <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                                    <DialogTrigger asChild>
+                                        <Button>Add category</Button>
+                                    </DialogTrigger>
+                                    <DialogContent>
+                                        <DialogTitle>
+                                            <DialogHeader> Add Category</DialogHeader>
+                                        </DialogTitle>
+                                        <div className="flex flex-col gap-2">
+                                            <Input placeholder="Enter Category" onChange={(e) => setNewCategory(e.target.value)} />
+                                            <Button type="button" onClick={handleAddCategory}>Submit</Button>
+                                        </div>
+                                    </DialogContent>
+                                </Dialog>
+                            </div>
                         </FormItem>
                     )}
                 />
@@ -324,7 +354,7 @@ export function ProductForm({ id, children }: { title?: string, id?: string, chi
                 {id &&
                     <Button type="button" className="w-full" variant="destructive" onClick={() => {
                         deleteProduct(id)
-                        revalidate("/admin/products")
+                        revalidatepath("/admin/products")
                     }}>
                         Delete Product</Button>
                 }
