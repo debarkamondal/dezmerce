@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import {
     DropdownMenu,
@@ -7,8 +9,9 @@ import {
 } from "./ui/dropdown-menu";
 import Link from "next/link";
 import SearchBar from "./SearchBar";
-import SignIn from "./SignIn";
-import { auth } from "@/auth";
+// import SignIn from "./SignIn";
+import { useSession, signIn } from "next-auth/react";
+import { Button } from "./ui/button";
 
 type NavLinks = { [key: string]: string }
 const userLinks: NavLinks = {
@@ -21,9 +24,11 @@ const adminLinks: NavLinks = {
     "orders": "/admin/orders",
 }
 
-export default async function NavBar() {
-    const session = await auth()
-    const navLinks = session?.user.role === 'admin'? adminLinks:  userLinks
+export default function NavBar() {
+    const { data: session } = useSession();
+    const navLinks = session?.user?.role === 'admin' ? adminLinks : userLinks;
+
+    
     return (
         <nav className="p-2 flex justify-between items-center gap-4">
             <Link href={"/"}>
@@ -55,11 +60,11 @@ export default async function NavBar() {
                             </DropdownMenuItem>
                         )}
                         <DropdownMenuItem>
-                            {!session && <SignIn />}
+                            {!session && <Button onClick={() => signIn()}>Sign In</Button>}
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
-                {!session?.user && <SignIn className="hidden lg:block" />}
+                {!session?.user && <Button onClick={() => signIn()}>Sign In</Button>}
             </div>
         </nav >
     );

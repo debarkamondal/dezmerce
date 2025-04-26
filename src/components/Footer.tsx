@@ -6,7 +6,7 @@ const socialLinks = {
     github: "https://github.com/debarkamondal",
     linkedin: "https://linkedin.com/in/debarkamondal"
 }
-const Footer = async () => {
+const Footer = () => {
     return (
         <footer className="relative bg-primary text-secondary p-4 py-8 md:text-center md:flex flex-col items-center gap-2 md:gap-4 mt-2">
             <div className="w-4/5 text-sm md:text-base md:flex flex-col items-center md:gap-2">

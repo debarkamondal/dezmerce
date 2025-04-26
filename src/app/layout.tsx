@@ -3,8 +3,8 @@ import { Alex_Brush } from "next/font/google";
 import "./globals.css";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
-import Cart from "@/components/Cart";
-import { CartProvider } from "@/components/providers/CartProvider";
+// import Cart from "@/components/Cart";
+// import { CartProvider } from "@/components/providers/CartProvider";
 import { SessionProvider } from "next-auth/react";
 
 const alexBrush = Alex_Brush({
@@ -36,9 +36,9 @@ export default function RootLayout({
                         {children}
                     </div>
                     <Footer />
-                    <CartProvider>
-                        <Cart />
-                    </CartProvider>
+                    {/* <CartProvider> */}
+                    {/*     <Cart /> */}
+                    {/* </CartProvider> */}
                 </SessionProvider>
             </body>
         </html >

@@ -1,29 +1,29 @@
-import HeroCarousel from "@/components/HeroCarousel";
+// import HeroCarousel from "@/components/HeroCarousel";
 import ProductGrid from "@/components/ProductGrid";
 import Image from "next/image";
 
 // Explicitly mark this page for static generation
 
-const carouselData = [
-    {
-        hook: "Latest releases for",
-        category: "Women",
-        price: 999,
-        image: "/hero-1.jpg"
-    },
-    {
-        hook: "Latest releases for",
-        category: "Men",
-        price: 999,
-        image: "/hero-2.jpg"
-    },
-    {
-        hook: "Latest releases for",
-        category: "Angles",
-        price: 999,
-        image: "/hero-3.jpg"
-    }
-]
+// const carouselData = [
+//     {
+//         hook: "Latest releases for",
+//         category: "Women",
+//         price: 999,
+//         image: "/hero-1.jpg"
+//     },
+//     {
+//         hook: "Latest releases for",
+//         category: "Men",
+//         price: 999,
+//         image: "/hero-2.jpg"
+//     },
+//     {
+//         hook: "Latest releases for",
+//         category: "Angles",
+//         price: 999,
+//         image: "/hero-3.jpg"
+//     }
+// ]
 
 const topCollection = [
     {
@@ -120,7 +120,7 @@ const dCCollection = [
 export default function Home() {
     return (
         <div className="md:mt-4 p-2 md:px-8 xl:px-40">
-            <HeroCarousel carouselData={carouselData} />
+            {/* <HeroCarousel carouselData={carouselData} /> */}
             <h2 className="text-primary font-alex-brush text-center text-4xl md:text-6xl my-8 lg:my-16 font-semibold">Top Collection</h2>
             <ProductGrid products={topCollection} className="md:grid-cols-4" />
             <h2 className="text-primary font-alex-brush text-center text-4xl md:text-6xl my-8 lg:my-16 font-semibold">Official Merch</h2>

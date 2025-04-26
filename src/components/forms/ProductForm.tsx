@@ -96,10 +96,13 @@ export function ProductForm({ id, children, cats }: { id?: string, children?: Re
 
     const { fields, append, remove } = useFieldArray({
         control: form.control,
-        name: "specs", // This must match the field name in your formSchema
+        name: "specs", 
     });
     const imagesRef = form.register("images");
     const thumbnailRef = form.register("thumbnail");
+
+
+
 
     // 2. Define a submit handler.
     async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -124,7 +127,7 @@ export function ProductForm({ id, children, cats }: { id?: string, children?: Re
         const product = await addProduct(payload)
 
 
-        // Handle update product
+        // TODO: Handle update product
         await fetch(product.thumbnail, { method: 'PUT', headers: { 'Content-Type': values.thumbnail[0].type }, body: values.thumbnail[0] })
         let imageRes = [];
         for (let i = 0; i < product.imageUrls.length; i++) {
@@ -180,7 +183,7 @@ export function ProductForm({ id, children, cats }: { id?: string, children?: Re
                                     <DialogTrigger asChild>
                                         <Button>Add category</Button>
                                     </DialogTrigger>
-                                    <DialogContent>
+                                    <DialogContent className="mx-2">
                                         <DialogTitle>
                                             <DialogHeader> Add Category</DialogHeader>
                                         </DialogTitle>
