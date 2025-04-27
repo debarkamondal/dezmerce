@@ -64,7 +64,7 @@ export const deleteProduct = async (id: string) => {
     return
 }
 
-export const addCategory = async (category: string) => {
+export const addCategory = async (category: string, image: File) => {
 
     const cookieStore = await cookies()
     const data = await fetch(`https://api.dkmondal.in/test/admin/categories`,
@@ -73,9 +73,16 @@ export const addCategory = async (category: string) => {
                 Authorization: cookieStore.get('auth')?.value as string
             },
             method: "POST",
-            body: JSON.stringify({category})
+            body: JSON.stringify({ category, image: image.name })
         })
-    return await data.json()
+    const presignedURLS = await data.json()
+    if (presignedURLS.imgUrl) await fetch(presignedURLS.imgUrl,
+        {
+            method: 'PUT',
+            headers: { 'Content-Type': image.type },
+            body: image
+        })
+        console.log(image.type)
 }
 
 

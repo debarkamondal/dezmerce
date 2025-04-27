@@ -27,8 +27,8 @@ const adminProducts = async () => {
     if (session?.user.role !== 'admin') redirect("/api/auth/signin")
     const temp = await fetch(`https://${process.env.NEXT_PUBLIC_BACKEND_URL}/${process.env.NEXT_PUBLIC_STAGE}/products`, { cache: "force-cache" })
     const data = await temp.json()
-    const res = await fetch(`https://${process.env.NEXT_PUBLIC_BACKEND_URL}/${process.env.NEXT_PUBLIC_STAGE}/categories`, {next:{tags: ['categories']}})
-    const categories = await res.json()
+    const res = await fetch(`https://${process.env.NEXT_PUBLIC_BACKEND_URL}/${process.env.NEXT_PUBLIC_STAGE}/categories`, { next: { tags: ['categories'] }, cache: "force-cache" })
+    const categories = res.json()
 
     return (
         <main>

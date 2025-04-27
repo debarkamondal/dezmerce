@@ -64,7 +64,7 @@ export default function NavBar() {
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
-                {!session?.user && <Button onClick={() => signIn()}>Sign In</Button>}
+                {!session?.user && <Button className="hidden md:block" onClick={() => signIn()}>Sign In</Button>}
             </div>
         </nav >
     );

@@ -5,13 +5,6 @@ import { useFieldArray, useForm } from "react-hook-form"
 import { z } from "zod"
 import { Button } from "@/components/ui/button"
 import {
-    Dialog,
-    DialogContent,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@/components/ui/dialog"
-import {
     Form,
     FormControl,
     FormField,
@@ -22,11 +15,12 @@ import {
 import { Input } from "@/components/ui/input"
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
 import { Product } from "@/lib/types"
-import { addCategory, addProduct, deleteProduct, revalidatepath, revalidatetag } from "@/lib/actions"
-import { ReactNode, startTransition, useEffect, useOptimistic, useState } from "react"
+import { addProduct, deleteProduct, revalidatepath } from "@/lib/actions"
+import { ReactNode, use, useEffect, useOptimistic, useState } from "react"
 import Image from "next/image"
 import { DeleteIcon, Plus } from "lucide-react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
+import CategoryForm from "./CategoryForm"
 
 const formSchema = z.object({
     title: z.string().min(8, {
@@ -54,11 +48,9 @@ const formSchema = z.object({
 })
 
 
-export function ProductForm({ id, children, cats }: { id?: string, children?: ReactNode, cats: Record<string, string> }) {
+export function ProductForm({ id, children, cats }: { id?: string, children?: ReactNode, cats: Promise<Record<string, string>> }) {
     const [isLoading, setIsLoading] = useState(false)
-    const [isDialogOpen, setIsDialogOpen] = useState(false)
-    const [newCategory, setNewCategory] = useState("")
-    const [categories, setCategories] = useOptimistic(Object.keys(cats).filter((e) => e !== 'pk' && e !== "sk"),
+    const [categories, setCategories] = useOptimistic(Object.keys((use(cats))).filter((e) => e !== 'pk' && e !== "sk"),
         (currentState, optimisticValue: string[]) => [...currentState, ...optimisticValue])
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -96,7 +88,7 @@ export function ProductForm({ id, children, cats }: { id?: string, children?: Re
 
     const { fields, append, remove } = useFieldArray({
         control: form.control,
-        name: "specs", 
+        name: "specs",
     });
     const imagesRef = form.register("images");
     const thumbnailRef = form.register("thumbnail");
@@ -139,12 +131,6 @@ export function ProductForm({ id, children, cats }: { id?: string, children?: Re
         revalidatepath("/admin/products")
     }
 
-    const handleAddCategory = async () => {
-        startTransition(() => { setCategories([newCategory]) })
-        addCategory(newCategory)
-        revalidatetag("categories")
-        setIsDialogOpen(false)
-    }
     return (
         <Form {...form}>
             {children}
@@ -179,20 +165,7 @@ export function ProductForm({ id, children, cats }: { id?: string, children?: Re
                                         {categories?.map((category) => <SelectItem className="capitalize" key={category} value={category}>{category}</SelectItem>)}
                                     </SelectContent>
                                 </Select>
-                                <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                                    <DialogTrigger asChild>
-                                        <Button>Add category</Button>
-                                    </DialogTrigger>
-                                    <DialogContent className="mx-2">
-                                        <DialogTitle>
-                                            <DialogHeader> Add Category</DialogHeader>
-                                        </DialogTitle>
-                                        <div className="flex flex-col gap-2">
-                                            <Input placeholder="Enter Category" onChange={(e) => setNewCategory(e.target.value)} />
-                                            <Button type="button" onClick={handleAddCategory}>Submit</Button>
-                                        </div>
-                                    </DialogContent>
-                                </Dialog>
+                                <CategoryForm setCategories={setCategories} />
                             </div>
                         </FormItem>
                     )}
