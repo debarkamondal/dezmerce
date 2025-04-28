@@ -130,7 +130,7 @@ export function ProductForm({ id, children, cats }: { id?: string, children?: Re
         }
         imageRes = imageRes.filter((res) => res.status === 200)
         setIsLoading(false)
-        router.back()
+        router.push('/admin/dashboard')
         revalidatepath("/admin/dashboard")
     }
 

@@ -47,7 +47,7 @@ const adminProducts = async () => {
             {Object.keys(categories).map((key: string) => {
                 const category: category = categories[key]
                 return <div key={key} className="flex gap-2 shadow p-2 rounded-md my-2 min-h-24">
-                    <Link href={`/admin/dashboard/create/product`} className="relative flex grow" >
+                    <Link href={`/admin/category/${key}`} className="relative flex grow" >
                         <Image src={`https://${process.env.NEXT_PUBLIC_S3_URL}/categories/${category.image}`} height={300} width={200} alt={`${key}-img`} className="size-24 rounded-md object-contain" />
                         <div className="m-2 mb-4 grow justify-start flex flex-col">
                             <p className="font-semibold capitalize">{key}</p>
