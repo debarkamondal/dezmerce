@@ -21,6 +21,7 @@ import Image from "next/image"
 import { DeleteIcon, Plus } from "lucide-react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
 import CategoryForm from "./CategoryForm"
+import { useRouter } from "next/navigation"
 
 const formSchema = z.object({
     title: z.string().min(8, {
@@ -49,6 +50,7 @@ const formSchema = z.object({
 
 
 export function ProductForm({ id, children, cats }: { id?: string, children?: ReactNode, cats: Record<string, string> }) {
+    const router= useRouter()
     const [isLoading, setIsLoading] = useState(false)
     const [categories, setCategories] = useOptimistic(Object.keys(cats).filter((e) => e !== 'pk' && e !== "sk"),
         (currentState, optimisticValue: string[]) => [...currentState, ...optimisticValue])
@@ -128,7 +130,8 @@ export function ProductForm({ id, children, cats }: { id?: string, children?: Re
         }
         imageRes = imageRes.filter((res) => res.status === 200)
         setIsLoading(false)
-        revalidatepath("/admin/products")
+        router.back()
+        revalidatepath("/admin/dashboard")
     }
 
     return (

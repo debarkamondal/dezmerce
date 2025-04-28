@@ -20,7 +20,7 @@ const userLinks: NavLinks = {
     "support": "/support"
 }
 const adminLinks: NavLinks = {
-    "products": "/admin/products",
+    "dashboard": "/admin/dashboard",
     "orders": "/admin/orders",
 }
 

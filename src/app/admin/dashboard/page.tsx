@@ -1,11 +1,10 @@
 import { Chart } from "@/components/Chart"
 import { Button } from "@/components/ui/button"
-import { Pencil, Plus } from "lucide-react"
+import {  Plus } from "lucide-react"
 import { auth } from "@/auth"
 import { redirect } from "next/navigation"
 import Image from "next/image"
 import Link from "next/link"
-import { Dialog, DialogTitle, DialogContent, DialogTrigger, DialogHeader } from "@/components/ui/dialog"
 import CategoryForm from "@/components/forms/CategoryForm"
 
 const chartData = [

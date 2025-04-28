@@ -21,16 +21,16 @@ const CategoryForm = ({ setCategories, children }: { setCategories?: (action: st
 
     const handleAddCategory = async () => {
         setIsLoading(true)
-        if(!catImgRef.current?.files) throw Error("Image not uploaded")
+        if (!catImgRef.current?.files) throw Error("Image not uploaded")
         const image = catImgRef.current?.files[0]
         //Optimistically update if setOptimistic action passed
-        if (setCategories) startTransition(() => { setCategories([category]) })
+        startTransition(() => { if (typeof setCategories === 'function') setCategories([category]) })
         const imgUrl = await addCategory(category, catImgRef.current?.files[0].name)
         console.log(imgUrl)
         if (imgUrl) await fetch(imgUrl,
             {
                 method: 'PUT',
-                headers: { 'Content-Type': image.type},
+                headers: { 'Content-Type': image.type },
                 body: image
             })
         setIsLoading(false)
