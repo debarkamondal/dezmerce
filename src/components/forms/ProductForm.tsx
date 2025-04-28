@@ -16,7 +16,7 @@ import { Input } from "@/components/ui/input"
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
 import { Product } from "@/lib/types"
 import { addProduct, deleteProduct, revalidatepath } from "@/lib/actions"
-import { ReactNode, use, useEffect, useOptimistic, useState } from "react"
+import { ReactNode, useEffect, useOptimistic, useState } from "react"
 import Image from "next/image"
 import { DeleteIcon, Plus } from "lucide-react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
@@ -48,9 +48,9 @@ const formSchema = z.object({
 })
 
 
-export function ProductForm({ id, children, cats }: { id?: string, children?: ReactNode, cats: Promise<Record<string, string>> }) {
+export function ProductForm({ id, children, cats }: { id?: string, children?: ReactNode, cats: Record<string, string> }) {
     const [isLoading, setIsLoading] = useState(false)
-    const [categories, setCategories] = useOptimistic(Object.keys((use(cats))).filter((e) => e !== 'pk' && e !== "sk"),
+    const [categories, setCategories] = useOptimistic(Object.keys(cats).filter((e) => e !== 'pk' && e !== "sk"),
         (currentState, optimisticValue: string[]) => [...currentState, ...optimisticValue])
 
     const form = useForm<z.infer<typeof formSchema>>({

@@ -52,7 +52,7 @@ export const addProduct = async (product: Partial<Product>) => {
 
 export const deleteProduct = async (id: string) => {
     const cookieStore = await cookies()
-    const data = await fetch(`https://api.dkmondal.in/test/admin/products`,
+    await fetch(`https://api.dkmondal.in/test/admin/products`,
         {
             headers: {
                 Authorization: cookieStore.get('auth')?.value as string
@@ -60,11 +60,9 @@ export const deleteProduct = async (id: string) => {
             method: 'DELETE',
             body: JSON.stringify({ id })
         })
-    console.log(await data.json())
-    return
 }
 
-export const addCategory = async (category: string, image: File) => {
+export const addCategory = async (category: string, image: string) => {
 
     const cookieStore = await cookies()
     const data = await fetch(`https://api.dkmondal.in/test/admin/categories`,
@@ -73,16 +71,9 @@ export const addCategory = async (category: string, image: File) => {
                 Authorization: cookieStore.get('auth')?.value as string
             },
             method: "POST",
-            body: JSON.stringify({ category, image: image.name })
+            body: JSON.stringify({ category, image: `${category}.${image.split(".")[image.split(".").length -1]}` })
         })
-    const presignedURLS = await data.json()
-    if (presignedURLS.imgUrl) await fetch(presignedURLS.imgUrl,
-        {
-            method: 'PUT',
-            headers: { 'Content-Type': image.type },
-            body: image
-        })
-        console.log(image.type)
+        return (await data.json()).imgUrl
 }
 
 

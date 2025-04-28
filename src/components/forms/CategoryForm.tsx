@@ -1,3 +1,4 @@
+"use client"
 import Image from "next/image";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
@@ -10,22 +11,38 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-const CategoryForm = ({ setCategories }: { setCategories: (action: string[]) => void }) => {
+const CategoryForm = ({ setCategories, children }: { setCategories?: (action: string[]) => void, children?: React.ReactNode }) => {
     const catImgRef = useRef<HTMLInputElement>(null)
     const [category, setCategory] = useState("")
     const [catImg, setCatImg] = useState("")
     const [isDialogOpen, setIsDialogOpen] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
+
+
     const handleAddCategory = async () => {
-        startTransition(() => { setCategories([category]) })
-        if (catImgRef.current?.files && catImgRef.current.files[0].name) await addCategory(category, catImgRef.current?.files[0])
+        setIsLoading(true)
+        if(!catImgRef.current?.files) throw Error("Image not uploaded")
+        const image = catImgRef.current?.files[0]
+        //Optimistically update if setOptimistic action passed
+        if (setCategories) startTransition(() => { setCategories([category]) })
+        const imgUrl = await addCategory(category, catImgRef.current?.files[0].name)
+        console.log(imgUrl)
+        if (imgUrl) await fetch(imgUrl,
+            {
+                method: 'PUT',
+                headers: { 'Content-Type': image.type},
+                body: image
+            })
+        setIsLoading(false)
         revalidatetag("categories")
-        setCatImg("")
         setIsDialogOpen(false)
+        setCatImg("")
     }
+
     return (
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
-                <Button>Add category</Button>
+                {children || <Button>Add category</Button>}
             </DialogTrigger>
             <DialogContent className="mx-auto absolute">
                 <DialogTitle>
@@ -36,7 +53,7 @@ const CategoryForm = ({ setCategories }: { setCategories: (action: string[]) => 
                     {!catImg && <span className="mb-2 text-center text-sm text-primary">Upload .jpg, .png, .webp</span>}
                     <Input type="file" hidden ref={catImgRef} onChange={(e) => (e.target.files !== null) && setCatImg(URL.createObjectURL(e.target.files[0]))} />
                     <Input placeholder="Enter Category" onChange={(e) => setCategory(e.target.value)} />
-                    <Button type="button" onClick={handleAddCategory}>Submit</Button>
+                    <Button disabled={isLoading} type="button" onClick={handleAddCategory}>{isLoading ? <Image src="/spinner.svg" height={20} width={20} alt="loading spinner" className="invert" /> : "Add Category"}</Button>
                 </div>
             </DialogContent>
         </Dialog>
