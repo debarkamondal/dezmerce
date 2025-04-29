@@ -21,4 +21,15 @@ export type Product = {
         [key: string]: string;
     }
 }
+export type productMetadata={
+    pk: string,
+    sk: string,
+    thumbnail: string,
+    price: number,
+    title: string
+}
 
+export type category = {
+    qty: number,
+    image: string,
+}

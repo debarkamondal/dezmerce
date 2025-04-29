@@ -3,9 +3,9 @@ import { Alex_Brush } from "next/font/google";
 import "./globals.css";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
-// import Cart from "@/components/Cart";
-// import { CartProvider } from "@/components/providers/CartProvider";
 import { SessionProvider } from "next-auth/react";
+import { CartProvider } from "@/components/providers/CartProvider";
+import Cart from "@/components/Cart";
 
 const alexBrush = Alex_Brush({
     variable: "--font-alex-brush",
@@ -31,14 +31,14 @@ export default function RootLayout({
                 className={`${alexBrush.variable} antialiased flex flex-col text-primary`}
             >
                 <SessionProvider>
-                    <NavBar />
-                    <div className="grow p-2 md:px-8 xl:px-40">
-                        {children}
-                    </div>
-                    <Footer />
-                    {/* <CartProvider> */}
-                    {/*     <Cart /> */}
-                    {/* </CartProvider> */}
+                    <CartProvider>
+                        <NavBar />
+                        <div className="grow p-2 md:px-8 xl:px-40">
+                            {children}
+                        </div>
+                        <Footer />
+                        <Cart />
+                    </CartProvider>
                 </SessionProvider>
             </body>
         </html >

@@ -6,6 +6,7 @@ import { redirect } from "next/navigation"
 import Image from "next/image"
 import Link from "next/link"
 import CategoryForm from "@/components/forms/CategoryForm"
+import { category } from "@/lib/types"
 
 const chartData = [
     { category: "T-Shirt", orders: 275, fill: "var(--color-tshirt)" },
@@ -15,10 +16,6 @@ const chartData = [
     { category: "Shoes", orders: 190, fill: "var(--color-shoes)" },
 ]
 
-type category = {
-    qty: number,
-    image: string,
-}
 const adminProducts = async () => {
     const session = await auth()
     if (session?.user.role !== 'admin') redirect("/api/auth/signin")

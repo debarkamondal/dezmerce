@@ -19,7 +19,7 @@ export default function ImageCarousel({ imageUrls, category, id, className }: { 
                     return (
                         <CarouselItem key={index} className="flex">
                             <Image
-                                src={`${process.env.NEXT_PUBLIC_S3_URL}/products/${category}/${id}/${image}`}
+                                src={`https://${process.env.NEXT_PUBLIC_S3_URL}/products/${category}/${id}/${image}`}
                                 alt={`product-image-${index}`}
                                 width={300}
                                 height={200}
