@@ -1,3 +1,4 @@
+import CategoryForm from "@/components/forms/CategoryForm"
 import { Button } from "@/components/ui/button"
 import { category, productMetadata } from "@/lib/types"
 import { Pencil } from "lucide-react"
@@ -9,7 +10,7 @@ const CategoryPage = async ({ params }: { params: Promise<{ category: string }> 
     let res = await fetch(`https://${process.env.NEXT_PUBLIC_BACKEND_URL}/${process.env.NEXT_PUBLIC_STAGE}/categories`, { next: { tags: ['categories'] }, cache: "force-cache" })
     const categories: { [name: string]: category } = await res.json()
     res = await fetch(`https://${process.env.NEXT_PUBLIC_BACKEND_URL}/${process.env.NEXT_PUBLIC_STAGE}/categories/${category}`)
-    const products:productMetadata[]=await res.json()
+    const products: productMetadata[] = await res.json()
     return (
         <main>
             <section className="flex gap-4">
@@ -17,7 +18,9 @@ const CategoryPage = async ({ params }: { params: Promise<{ category: string }> 
                 <div className="self-end">
                     <h1 className="text-2xl font-semibold capitalize">{category}</h1>
                     <p className="text-sm my-2">(Qty: {categories[category].qty})</p>
-                    <Button><Pencil />Edit</Button>
+                    <CategoryForm categoryData={categories[category]} initCategory={category}>
+                        <Button><Pencil />Edit</Button>
+                    </CategoryForm>
                 </div>
             </section>
             <h2 className="font-semibold text-xl mt-8 m-2">All {category}s</h2>

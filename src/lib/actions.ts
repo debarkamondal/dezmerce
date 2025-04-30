@@ -71,11 +71,28 @@ export const addCategory = async (category: string, image: string) => {
                 Authorization: cookieStore.get('auth')?.value as string
             },
             method: "POST",
-            body: JSON.stringify({ category, image: `${category}.${image.split(".")[image.split(".").length -1]}` })
+            body: JSON.stringify({ category, image: `${category}.${image.split(".")[image.split(".").length - 1]}` })
         })
-        return (await data.json()).imgUrl
+    return (await data.json()).imgUrl
 }
 
+export const updateCategory = async (initCategory: string, payload: { category?: string, image?: string }) => {
+
+    const cookieStore = await cookies()
+    console.log(payload)
+    const data = await fetch(`https://api.dkmondal.in/test/admin/categories`,
+        {
+            headers: {
+                Authorization: cookieStore.get('auth')?.value as string
+            },
+            method: "PATCH",
+            body: JSON.stringify({
+                initCategory,
+                payload
+            })
+        })
+    return (await data.json()).imgUrl
+}
 
 export const revalidatepath = async (path: string) => revalidatePath(path)
 export const revalidatetag = async (tag: string) => revalidateTag(tag)
