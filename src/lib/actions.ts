@@ -76,10 +76,9 @@ export const addCategory = async (category: string, image: string) => {
     return (await data.json()).imgUrl
 }
 
-export const updateCategory = async (initCategory: string, payload: { category?: string, image?: string }) => {
+export const updateCategory = async (initCategory: string, updated: { category?: string, image?: string }) => {
 
     const cookieStore = await cookies()
-    console.log(payload)
     const data = await fetch(`https://api.dkmondal.in/test/admin/categories`,
         {
             headers: {
@@ -88,10 +87,11 @@ export const updateCategory = async (initCategory: string, payload: { category?:
             method: "PATCH",
             body: JSON.stringify({
                 initCategory,
-                payload
+                updated
             })
         })
-    return (await data.json()).imgUrl
+
+    return await data.json() 
 }
 
 export const revalidatepath = async (path: string) => revalidatePath(path)
