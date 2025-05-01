@@ -9,8 +9,7 @@ import {
 } from "./ui/dropdown-menu";
 import Link from "next/link";
 import SearchBar from "./SearchBar";
-// import SignIn from "./SignIn";
-import { useSession, signIn } from "next-auth/react";
+import { useSession, signIn, signOut } from "next-auth/react";
 import { Button } from "./ui/button";
 
 type NavLinks = { [key: string]: string }
@@ -27,7 +26,6 @@ const adminLinks: NavLinks = {
 export default function NavBar() {
     const { data: session } = useSession();
     const navLinks = session?.user?.role === 'admin' ? adminLinks : userLinks;
-
     
     return (
         <nav className="p-2 flex justify-between items-center gap-4">
@@ -61,10 +59,12 @@ export default function NavBar() {
                         )}
                         <DropdownMenuItem>
                             {!session && <Button onClick={() => signIn()}>Sign In</Button>}
+                            {session?.user && <Button onClick={() => signOut()}>Sign Out</Button>}
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
                 {!session?.user && <Button className="hidden md:block" onClick={() => signIn()}>Sign In</Button>}
+                {session?.user && <Button className="hidden md:block" onClick={() => signOut()}>Sign Out</Button>}
             </div>
         </nav >
     );

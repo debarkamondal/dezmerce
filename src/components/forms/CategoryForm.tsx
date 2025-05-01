@@ -32,6 +32,8 @@ const CategoryForm = ({ setCategories, initCategory, categoryData, children }: p
 
     const handleClick = async () => {
         setIsLoading(true)
+
+        const payload: { category?: string, image?: string } = {}
         let image = (catImgRef.current?.files) ? catImgRef.current?.files[0] : null
 
         //Optimistically update if setOptimistic action passed
@@ -40,21 +42,17 @@ const CategoryForm = ({ setCategories, initCategory, categoryData, children }: p
         //Update category if form already initialized
         if (initCategory) {
 
-            const payload: { category?: string, image?: string } = {}
             if (category && category !== initCategory) payload.category = category.toLowerCase()
             if (image?.name) payload.image = image.name
             if (Object.keys(payload).length < 1) throw ("Nothing to change")
             const { imgUrl } = await updateCategory(initCategory.toLowerCase(), payload)
-            console.log(imgUrl)
             if (image && imgUrl) await fetch(imgUrl,
                 {
                     method: 'PUT',
                     headers: { 'Content-Type': image.type },
                     body: image
                 })
-            if (category !== initCategory) router.push(`/admin/category/${payload.category}`)
         } else {
-
             if (!catImgRef.current?.files) return Error("No image uploaded")
             image = catImgRef.current?.files[0]
             const imgUrl = await addCategory(category.toLowerCase(), catImgRef.current?.files[0].name)
@@ -68,6 +66,7 @@ const CategoryForm = ({ setCategories, initCategory, categoryData, children }: p
         setIsLoading(false)
         revalidatetag("categories")
         setIsDialogOpen(false)
+        if (category !== initCategory) router.push(`/admin/category/${payload.category}`)
         setCatImg(null)
     }
     const imageUrl = categoryData ? `https://${process.env.NEXT_PUBLIC_S3_URL}/categories/${categoryData?.image}` : null

@@ -1,7 +1,5 @@
-import { auth } from "@/auth"
 import OrderWidget from "@/components/OrderWidget"
 import { Chart } from "@/components/Chart"
-import { redirect } from "next/navigation"
 
 const chartData = [
     { category: "T-Shirt", orders: 275, fill: "var(--color-tshirt)" },
@@ -12,8 +10,6 @@ const chartData = [
 ]
 
 const AdminPage = async () => {
-    const session = await auth()
-    if (session?.user.role !== 'admin') redirect("/api/auth/signin")
 
     return (
         <main>

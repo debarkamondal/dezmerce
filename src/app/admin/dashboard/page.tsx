@@ -1,8 +1,6 @@
 import { Chart } from "@/components/Chart"
 import { Button } from "@/components/ui/button"
 import {  Plus } from "lucide-react"
-import { auth } from "@/auth"
-import { redirect } from "next/navigation"
 import Image from "next/image"
 import Link from "next/link"
 import CategoryForm from "@/components/forms/CategoryForm"
@@ -17,8 +15,6 @@ const chartData = [
 ]
 
 const adminProducts = async () => {
-    const session = await auth()
-    if (session?.user.role !== 'admin') redirect("/api/auth/signin")
     const res = await fetch(`https://${process.env.NEXT_PUBLIC_BACKEND_URL}/${process.env.NEXT_PUBLIC_STAGE}/categories`, { next: { tags: ['categories'] }, cache: "force-cache" })
     const categories: { [name: string]: category } = await res.json()
 
