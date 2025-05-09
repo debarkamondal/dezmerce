@@ -1,12 +1,14 @@
 export default function ProductLayout({
-    children,
-    modal
+  children,
+  modal,
 }: {
-    children: React.ReactNode,
-    modal: React.ReactNode
+  children: React.ReactNode;
+  modal: React.ReactNode;
 }) {
-    return <section>
-        {children}
-        {modal}
+  return (
+    <section>
+      {children}
+      {modal}
     </section>
+  );
 }

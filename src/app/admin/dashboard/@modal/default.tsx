@@ -1,3 +1,3 @@
-export default async function DefaultModal(){
-    return null
+export default async function DefaultModal() {
+  return null;
 }

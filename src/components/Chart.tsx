@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { Label, Pie, PieChart } from "recharts"
+import * as React from "react";
+import { Label, Pie, PieChart } from "recharts";
 
 import {
   Card,
@@ -9,18 +9,18 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart"
-type chartItems={
-   category: string;
-   orders: number;
-   fill: string;
-}
+} from "@/components/ui/chart";
+type chartItems = {
+  category: string;
+  orders: number;
+  fill: string;
+};
 
 const chartConfig = {
   orders: {
@@ -46,12 +46,12 @@ const chartConfig = {
     label: "Shoes",
     color: "hsl(var(--chart-5))",
   },
-} satisfies ChartConfig
+} satisfies ChartConfig;
 
-export function Chart(props: {title:string, data: chartItems[]}) {
+export function Chart(props: { title: string; data: chartItems[] }) {
   const total = React.useMemo(() => {
-    return props.data.reduce((acc, curr) => acc + curr.orders, 0)
-  }, [props.data])
+    return props.data.reduce((acc, curr) => acc + curr.orders, 0);
+  }, [props.data]);
 
   return (
     <Card className="flex flex-col">
@@ -89,7 +89,7 @@ export function Chart(props: {title:string, data: chartItems[]}) {
                         <tspan
                           x={viewBox.cx}
                           y={viewBox.cy}
-                          className="fill-foreground text-base md:text-3xl font-bold"
+                          className="fill-foreground text-base font-bold md:text-3xl"
                         >
                           {total.toLocaleString()}
                         </tspan>
@@ -101,7 +101,7 @@ export function Chart(props: {title:string, data: chartItems[]}) {
                           Orders
                         </tspan>
                       </text>
-                    )
+                    );
                   }
                 }}
               />
@@ -110,6 +110,5 @@ export function Chart(props: {title:string, data: chartItems[]}) {
         </ChartContainer>
       </CardContent>
     </Card>
-  )
+  );
 }
-
