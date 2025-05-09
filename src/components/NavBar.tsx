@@ -6,11 +6,16 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
 } from "./ui/dropdown-menu";
 import Link from "next/link";
 import SearchBar from "./SearchBar";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { Button } from "./ui/button";
+import { useEffect, useState } from "react";
+import { DropdownMenuPortal } from "@radix-ui/react-dropdown-menu";
 
 type NavLinks = { [key: string]: string };
 const userLinks: NavLinks = {
@@ -25,6 +30,17 @@ const adminLinks: NavLinks = {
 
 export default function NavBar() {
   const { data: session } = useSession();
+  const [categories, setCategories] = useState<Array<string>>()
+  useEffect(() => {
+    const getCategories = async () => {
+      const data = await fetch(`https://${process.env.NEXT_PUBLIC_BACKEND_URL}/${process.env.NEXT_PUBLIC_STAGE}/categories`)
+      const cats = await data.json()
+      delete (cats.pk)
+      delete (cats.sk)
+      setCategories(Object.keys(cats))
+    }
+    getCategories()
+  }, [])
   const navLinks = session?.user?.role === "admin" ? adminLinks : userLinks;
 
   return (
@@ -50,6 +66,20 @@ export default function NavBar() {
             </div>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
+            <DropdownMenuSub>
+              <DropdownMenuSubTrigger>Categories</DropdownMenuSubTrigger>
+              <DropdownMenuPortal>
+                <DropdownMenuSubContent>
+                  {categories?.map((category) => (
+                    <DropdownMenuItem key={category}>
+                      <Link href={`/categories/${category}`} className="capitalize">
+                        {category}
+                      </Link>
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuSubContent>
+              </DropdownMenuPortal>
+            </DropdownMenuSub>
             {Object.keys(navLinks).map((link) => (
               <DropdownMenuItem key={link}>
                 <Link href={navLinks[link]} className="capitalize">
