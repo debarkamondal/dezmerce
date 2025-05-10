@@ -11,5 +11,6 @@ export async function getCategories() {
     `https://${process.env.NEXT_PUBLIC_BACKEND_URL}/${process.env.NEXT_PUBLIC_STAGE}/categories`,
     { next: { tags: ["categories"] }, cache: "force-cache" },
   );
-  return await res.json();
+  const data = await res.json()
+  return data
 }

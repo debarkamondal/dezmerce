@@ -20,7 +20,6 @@ const CategoryPage = async ({
     }
   );
   const products: productMetadata[] = await res.json();
-  console.log(products)
   return (
     <main>
       <section className="flex gap-4">

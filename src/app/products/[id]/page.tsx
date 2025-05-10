@@ -35,7 +35,6 @@ export default async function Product({
     description: product.description,
     specs: product.specs,
   };
-  console.log(data)
   return (
     <main className="relative md:grid md:grid-cols-2 md:gap-8">
       <ImageCarousel

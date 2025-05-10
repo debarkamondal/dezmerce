@@ -1,5 +1,6 @@
 "use client";
 
+import { ProductForm } from "@/components/forms/ProductForm";
 import {
   Dialog,
   DialogContent,
@@ -8,15 +9,21 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function ProductModal({
-  children,
+  categories,
 }: {
-  children: React.ReactNode;
+  categories: Record<string, string>;
+
 }) {
   const router = useRouter();
+  const [isDialogOpen, setIsDialogOpen] = useState(true)
   return (
-    <Dialog open onOpenChange={() => router.back()}>
+    <Dialog open={isDialogOpen} onOpenChange={() => {
+      router.back()
+      return setIsDialogOpen
+    }}>
       <DialogTrigger hidden>Open</DialogTrigger>
       <DialogContent
         aria-describedby="add product form"
@@ -25,7 +32,7 @@ export default function ProductModal({
         <DialogHeader>
           <DialogTitle>Add Product</DialogTitle>
         </DialogHeader>
-        {children}
+        <ProductForm cats={categories} setIsDialogOpen={setIsDialogOpen} />
       </DialogContent>
     </Dialog>
   );

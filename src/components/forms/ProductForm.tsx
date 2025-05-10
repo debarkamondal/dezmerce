@@ -16,7 +16,7 @@ import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Product } from "@/lib/types";
 import { addProduct, deleteProduct, revalidatepath } from "@/lib/actions";
-import { ReactNode, useEffect, useOptimistic, useState } from "react";
+import { Dispatch, ReactNode, SetStateAction, useEffect, useOptimistic, useState } from "react";
 import Image from "next/image";
 import { DeleteIcon, Plus } from "lucide-react";
 import {
@@ -70,12 +70,14 @@ export function ProductForm({
   id,
   children,
   cats,
+  setIsDialogOpen
 }: {
   id?: string;
   children?: ReactNode;
   cats: Record<string, string>;
+  setIsDialogOpen?: Dispatch<SetStateAction<boolean>>
 }) {
-  const router = useRouter();
+  const router = useRouter()
   const [isLoading, setIsLoading] = useState(false);
   const [categories, setCategories] = useOptimistic(
     Object.keys(cats).filter((e) => e !== "pk" && e !== "sk"),
@@ -133,6 +135,8 @@ export function ProductForm({
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
     let specArr: Record<string, string> = {};
+
+    //formating specs which are in form [{key:string, value:string}] to {key:value}
     values.specs?.forEach((spec) => {
       if (spec.key && spec.value)
         specArr = { ...specArr, [spec.key]: spec.value };
@@ -155,7 +159,11 @@ export function ProductForm({
     }
     const product = await addProduct(payload);
 
+
     // TODO: Handle update product
+
+
+
     await fetch(product.thumbnail, {
       method: "PUT",
       headers: { "Content-Type": values.thumbnail[0].type },
@@ -173,8 +181,9 @@ export function ProductForm({
     }
     imageRes = imageRes.filter((res) => res.status === 200);
     setIsLoading(false);
-    router.push("/admin/dashboard");
     revalidatepath("/admin/dashboard");
+    if (setIsDialogOpen) setIsDialogOpen(false)
+    router.push("/admin/dashboard");
   }
 
   return (
