@@ -19,7 +19,6 @@ import { DropdownMenuPortal } from "@radix-ui/react-dropdown-menu";
 
 type NavLinks = { [key: string]: string };
 const userLinks: NavLinks = {
-  products: "/products",
   about: "/about",
   support: "/support",
 };
@@ -58,7 +57,7 @@ export default function NavBar() {
       <div className="flex items-center gap-10">
         <SearchBar />
         <DropdownMenu>
-          <DropdownMenuTrigger className="pr-2 lg:hidden">
+          <DropdownMenuTrigger className="pr-2 lg:hidden" >
             <div className="flex h-5 flex-col justify-around">
               <div className="bg-foreground h-[2px] w-5" />
               <div className="bg-foreground h-[2px] w-5" />
@@ -71,21 +70,21 @@ export default function NavBar() {
               <DropdownMenuPortal>
                 <DropdownMenuSubContent>
                   {categories?.map((category) => (
-                    <DropdownMenuItem key={category}>
-                      <Link href={`/categories/${category}`} className="capitalize">
+                    <Link key={category} href={session?.user.role === 'admin' ? `/admin/category/${category}` : `/category/${category}`} className="capitalize">
+                      <DropdownMenuItem>
                         {category}
-                      </Link>
-                    </DropdownMenuItem>
+                      </DropdownMenuItem>
+                    </Link>
                   ))}
                 </DropdownMenuSubContent>
               </DropdownMenuPortal>
             </DropdownMenuSub>
             {Object.keys(navLinks).map((link) => (
-              <DropdownMenuItem key={link}>
-                <Link href={navLinks[link]} className="capitalize">
+              <Link key={link} href={navLinks[link]} className="capitalize">
+                <DropdownMenuItem>
                   {link}
-                </Link>
-              </DropdownMenuItem>
+                </DropdownMenuItem>
+              </Link>
             ))}
             <DropdownMenuItem>
               {!session && <Button onClick={() => signIn()}>Sign In</Button>}
