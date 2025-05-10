@@ -2,9 +2,17 @@ import CategoryForm from "@/components/forms/CategoryForm";
 import { Button } from "@/components/ui/button";
 import { productMetadata } from "@/lib/types";
 import { getCategories } from "@/lib/utils";
-import { Pencil } from "lucide-react";
+import { Pencil, Plus } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { ProductForm } from "@/components/forms/ProductForm";
 
 const CategoryPage = async ({
   params,
@@ -33,15 +41,32 @@ const CategoryPage = async ({
         <div className="self-end">
           <h1 className="text-2xl font-semibold capitalize">{category}</h1>
           <p className="my-2 text-sm">(Qty: {categories[category].qty})</p>
-          <CategoryForm
-            categoryData={categories[category]}
-            initCategory={category}
-          >
-            <Button>
-              <Pencil />
-              Edit
-            </Button>
-          </CategoryForm>
+          <div className="flex gap-2">
+            <CategoryForm
+              categoryData={categories[category]}
+              initCategory={category}
+            >
+              <Button>
+                <Pencil />
+                Edit
+              </Button>
+            </CategoryForm>
+
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button><Plus />Product</Button>
+              </DialogTrigger>
+              <DialogContent
+                aria-describedby="add product form"
+                className="max-h-5/6 overflow-scroll"
+              >
+                <DialogHeader>
+                  <DialogTitle>Add Product</DialogTitle>
+                </DialogHeader>
+                <ProductForm cats={categories} />
+              </DialogContent>
+            </Dialog>
+          </div>
         </div>
       </section>
       <h2 className="m-2 mt-8 text-xl font-semibold">All {category}s</h2>

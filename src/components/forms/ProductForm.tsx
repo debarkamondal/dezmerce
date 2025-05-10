@@ -183,7 +183,7 @@ export function ProductForm({
     setIsLoading(false);
     revalidatepath("/admin/dashboard");
     if (setIsDialogOpen) setIsDialogOpen(false)
-    router.push("/admin/dashboard");
+    router.back()
   }
 
   return (
