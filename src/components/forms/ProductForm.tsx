@@ -49,8 +49,8 @@ const formSchema = z.object({
     typeof window === "undefined"
       ? z.any()
       : z
-          .instanceof(FileList)
-          .refine((files) => files.length > 1, "Atleast 2 images required."),
+        .instanceof(FileList)
+        .refine((files) => files.length > 1, "Atleast 2 images required."),
   thumbnail: typeof window === "undefined" ? z.any() : z.instanceof(FileList),
   specs: z
     .array(

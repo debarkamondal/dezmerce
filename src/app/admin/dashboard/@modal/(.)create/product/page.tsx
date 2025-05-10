@@ -1,12 +1,9 @@
 import { ProductForm } from "@/components/forms/ProductForm";
 import ProductModal from "./ProductModal";
+import { getCategories } from "@/lib/utils";
 
 const ModalPage = async () => {
-  const res = await fetch(
-    `https://${process.env.NEXT_PUBLIC_BACKEND_URL}/${process.env.NEXT_PUBLIC_STAGE}/categories`,
-    { next: { tags: ["categories"] }, cache: "force-cache" },
-  );
-  const categories = await res.json();
+  const categories = await getCategories()
   return (
     <ProductModal>
       <ProductForm cats={categories} />

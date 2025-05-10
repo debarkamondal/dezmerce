@@ -18,7 +18,7 @@ export default async function Product({
   const data: Product = {
     id: product.id,
     thumbnail: product.thumbnail,
-    category: product.category,
+    category: product.category.split(":")[1],
     gender: "male",
     title: product.title,
     defaultDelivery: "12Jan",
@@ -35,6 +35,7 @@ export default async function Product({
     description: product.description,
     specs: product.specs,
   };
+  console.log(data)
   return (
     <main className="relative md:grid md:grid-cols-2 md:gap-8">
       <ImageCarousel

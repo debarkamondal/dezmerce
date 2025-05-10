@@ -78,8 +78,7 @@ const CategoryForm = ({
     setIsLoading(false);
     revalidatetag("categories");
     setIsDialogOpen(false);
-    if (category !== initCategory)
-      router.push(`/admin/category/${payload.category}`);
+    if (category !== initCategory) router.push(`/admin/category/${category}`);
     setCatImg(null);
   };
   const imageUrl = categoryData

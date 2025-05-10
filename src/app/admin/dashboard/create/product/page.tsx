@@ -1,11 +1,8 @@
 import { ProductForm } from "@/components/forms/ProductForm";
+import { getCategories } from "@/lib/utils";
 
 export default async function ProductPage() {
-  const res = await fetch(
-    `https://${process.env.NEXT_PUBLIC_BACKEND_URL}/${process.env.NEXT_PUBLIC_STAGE}/categories`,
-    { next: { tags: ["categories"] } },
-  );
-  const categories = await res.json();
+  const categories = await getCategories()
   return (
     <div className="mx-4 md:mx-auto md:max-w-1/2">
       <ProductForm cats={categories}>

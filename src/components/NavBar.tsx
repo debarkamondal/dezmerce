@@ -33,7 +33,7 @@ export default function NavBar() {
   const [categories, setCategories] = useState<Array<string>>()
   useEffect(() => {
     const getCategories = async () => {
-      const data = await fetch(`https://${process.env.NEXT_PUBLIC_BACKEND_URL}/${process.env.NEXT_PUBLIC_STAGE}/categories`)
+      const data = await fetch(`https://${process.env.NEXT_PUBLIC_BACKEND_URL}/${process.env.NEXT_PUBLIC_STAGE}/categories`, { next: { tags: ['categories'] } })
       const cats = await data.json()
       delete (cats.pk)
       delete (cats.sk)
