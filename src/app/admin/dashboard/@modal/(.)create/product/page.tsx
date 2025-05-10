@@ -1,4 +1,3 @@
-import { ProductForm } from "@/components/forms/ProductForm";
 import ProductModal from "./ProductModal";
 import { getCategories } from "@/lib/utils";
 
