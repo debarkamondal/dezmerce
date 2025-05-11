@@ -11,11 +11,11 @@ import {
   DropdownMenuSubTrigger,
 } from "./ui/dropdown-menu";
 import Link from "next/link";
-import SearchBar from "./SearchBar";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { Button } from "./ui/button";
 import { useEffect, useState } from "react";
 import { DropdownMenuPortal } from "@radix-ui/react-dropdown-menu";
+import { ChevronDown } from "lucide-react";
 
 type NavLinks = { [key: string]: string };
 const userLinks: NavLinks = {
@@ -30,6 +30,7 @@ const adminLinks: NavLinks = {
 export default function NavBar() {
   const { data: session } = useSession();
   const [categories, setCategories] = useState<Array<string>>()
+  const [isOpen, setIsOpen] = useState(false)
   useEffect(() => {
     const getCategories = async () => {
       const data = await fetch(`https://${process.env.NEXT_PUBLIC_BACKEND_URL}/${process.env.NEXT_PUBLIC_STAGE}/categories`, { next: { tags: ['categories'] } })
@@ -47,15 +48,28 @@ export default function NavBar() {
       <Link href={"/"}>
         <Image src={"/logo.png"} height="50" width="50" alt="brand-logo" />
       </Link>
-      <ul className="align-self-start ml-14 hidden grow gap-16 lg:flex">
+      <ul className="align-self-start ml-14 hidden grow gap-16 lg:flex text-sm font-semibold uppercase">
+        <li>
+          <DropdownMenu modal={false} open={isOpen} onOpenChange={setIsOpen}>
+            <DropdownMenuTrigger onMouseEnter={() => setIsOpen(true)} className="uppercase text-sm font-semibold flex gap-2 items-center cursor-pointer">Categories<ChevronDown size={18} /></DropdownMenuTrigger>
+            <DropdownMenuContent onMouseLeave={() => setIsOpen(false)} >
+              {categories?.map((category) => (
+                <Link key={category} href={session?.user.role === 'admin' ? `/admin/category/${category}` : `/category/${category}`} className="capitalize cursor-pointer">
+                  <DropdownMenuItem>
+                    {category}
+                  </DropdownMenuItem>
+                </Link>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </li>
         {Object.keys(navLinks).map((link) => (
           <Link href={navLinks[link]} key={link}>
-            <li className="text-sm font-semibold uppercase">{link}</li>
+            <li>{link}</li>
           </Link>
         ))}
       </ul>
       <div className="flex items-center gap-10">
-        <SearchBar />
         <DropdownMenu>
           <DropdownMenuTrigger className="pr-2 lg:hidden" >
             <div className="flex h-5 flex-col justify-around">
