@@ -76,7 +76,7 @@ const CategoryPage = async ({
           >
             <Link
               href={`/products/${cat}-${product.sk}`}
-              className="relative flex grow"
+              className="relative flex grow cursor-pointer"
             >
               <Image
                 src={`https://${process.env.NEXT_PUBLIC_S3_URL}/products/${cat}/${product.sk}/${product.thumbnail}`}
@@ -91,6 +91,22 @@ const CategoryPage = async ({
                 <span className="mt-2">Rs. {product.price}</span>
               </div>
             </Link>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button className="self-center">
+                  <Pencil />
+                </Button>
+              </DialogTrigger>
+              <DialogContent
+                aria-describedby="add product form"
+                className="max-h-5/6 overflow-scroll"
+              >
+                <DialogHeader>
+                  <DialogTitle>Edit Product</DialogTitle>
+                </DialogHeader>
+                <ProductForm cats={categories} id={cat + "-" + product.sk} />
+              </DialogContent>
+            </Dialog>
           </div>
         );
       })}
