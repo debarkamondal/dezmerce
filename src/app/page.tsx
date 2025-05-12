@@ -7,7 +7,7 @@ const carouselData = [
     hook: "Latest releases for",
     category: "Women",
     price: 999,
-    image: "/hero-1.jpg"
+    image: "/hero-1.jpg",
   },
   {
     hook: "Latest releases for",

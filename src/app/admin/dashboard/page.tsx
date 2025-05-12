@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import CategoryForm from "@/components/forms/CategoryForm";
 import { category } from "@/lib/types";
+import { getCategories } from "@/lib/utils";
 
 const chartData = [
   { category: "T-Shirt", orders: 275, fill: "var(--color-tshirt)" },
@@ -15,11 +16,7 @@ const chartData = [
 ];
 
 const adminProducts = async () => {
-  const res = await fetch(
-    `https://${process.env.NEXT_PUBLIC_BACKEND_URL}/${process.env.NEXT_PUBLIC_STAGE}/categories`,
-    { next: { tags: ["categories"] }, cache: "force-cache" },
-  );
-  const categories: { [name: string]: category } = await res.json();
+  const categories: { [name: string]: category } = await getCategories();
 
   delete categories.pk;
   delete categories.sk;

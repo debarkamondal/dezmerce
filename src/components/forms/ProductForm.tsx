@@ -16,7 +16,14 @@ import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Product } from "@/lib/types";
 import { addProduct, deleteProduct, revalidatepath } from "@/lib/actions";
-import { Dispatch, ReactNode, SetStateAction, useEffect, useOptimistic, useState } from "react";
+import {
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  useEffect,
+  useOptimistic,
+  useState,
+} from "react";
 import Image from "next/image";
 import { DeleteIcon, Plus } from "lucide-react";
 import {
@@ -28,7 +35,7 @@ import {
 } from "../ui/select";
 import CategoryForm from "./CategoryForm";
 import { useRouter } from "next/navigation";
-
+import { getProductById } from "@/lib/utils";
 
 const formSchema = z.object({
   title: z
@@ -49,8 +56,8 @@ const formSchema = z.object({
     typeof window === "undefined"
       ? z.any()
       : z
-        .instanceof(FileList)
-        .refine((files) => files.length > 1, "Atleast 2 images required."),
+          .instanceof(FileList)
+          .refine((files) => files.length > 1, "Atleast 2 images required."),
   thumbnail: typeof window === "undefined" ? z.any() : z.instanceof(FileList),
   specs: z
     .array(
@@ -70,14 +77,14 @@ export function ProductForm({
   id,
   children,
   cats,
-  setIsDialogOpen
+  setIsDialogOpen,
 }: {
   id?: string;
   children?: ReactNode;
   cats: Record<string, string>;
-  setIsDialogOpen?: Dispatch<SetStateAction<boolean>>
+  setIsDialogOpen?: Dispatch<SetStateAction<boolean>>;
 }) {
-  const router = useRouter()
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [categories, setCategories] = useOptimistic(
     Object.keys(cats).filter((e) => e !== "pk" && e !== "sk"),
@@ -102,10 +109,7 @@ export function ProductForm({
   useEffect(() => {
     async function getData() {
       if (id) {
-        const product = await fetch(
-          `https://${process.env.NEXT_PUBLIC_BACKEND_URL}/${process.env.NEXT_PUBLIC_STAGE}/products/${id}`,
-        );
-        const data: Product = await product.json();
+        const data: Product = await getProductById(id);
         if (data) {
           form.reset({
             title: data.title ?? "",
@@ -157,12 +161,11 @@ export function ProductForm({
         images: payload.images ? [...payload.images, image.name] : [image.name],
       };
     }
-    const product = await addProduct(payload);
-
-
-    // TODO: Handle update product
-
-
+    let product;
+    if (!id) product = await addProduct(payload);
+    else {
+      //FIX: Make this work
+    }
 
     await fetch(product.thumbnail, {
       method: "PUT",
@@ -180,10 +183,11 @@ export function ProductForm({
       );
     }
     imageRes = imageRes.filter((res) => res.status === 200);
+    // TODO: Handle update product
     setIsLoading(false);
     revalidatepath("/admin/dashboard");
-    if (setIsDialogOpen) setIsDialogOpen(false)
-    router.back()
+    if (setIsDialogOpen) setIsDialogOpen(false);
+    router.back();
   }
 
   return (

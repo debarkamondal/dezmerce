@@ -4,6 +4,7 @@ import VariantSelector from "./VariantSelector";
 import ImageCarousel from "./ImageCarousel";
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { type Product } from "@/lib/types";
+import { getProductById } from "@/lib/utils";
 
 export default async function Product({
   params,
@@ -11,10 +12,7 @@ export default async function Product({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const testData = await fetch(
-    `https://${process.env.NEXT_PUBLIC_BACKEND_URL}/${process.env.NEXT_PUBLIC_STAGE}/products/${id}`,
-  );
-  const product: Product = await testData.json();
+  const product: Product = await getProductById(id);
   const data: Product = {
     id: product.id,
     thumbnail: product.thumbnail,

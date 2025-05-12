@@ -5,17 +5,18 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuTrigger,
   DropdownMenuSub,
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import Link from "next/link";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 import { Button } from "./ui/button";
 import { useEffect, useState } from "react";
 import { DropdownMenuPortal } from "@radix-ui/react-dropdown-menu";
 import { ChevronDown } from "lucide-react";
+import { getCategories } from "@/lib/utils";
 
 type NavLinks = { [key: string]: string };
 const userLinks: NavLinks = {
@@ -29,18 +30,18 @@ const adminLinks: NavLinks = {
 
 export default function NavBar() {
   const { data: session } = useSession();
-  const [categories, setCategories] = useState<Array<string>>()
-  const [isOpen, setIsOpen] = useState(false)
+  const [categories, setCategories] = useState<Array<string>>();
+  const [isOpen, setIsOpen] = useState(false);
   useEffect(() => {
-    const getCategories = async () => {
-      const data = await fetch(`https://${process.env.NEXT_PUBLIC_BACKEND_URL}/${process.env.NEXT_PUBLIC_STAGE}/categories`, { next: { tags: ['categories'] } })
-      const cats = await data.json()
-      delete (cats.pk)
-      delete (cats.sk)
-      setCategories(Object.keys(cats))
-    }
-    getCategories()
-  }, [])
+    const getData = async () => {
+      const cats = await getCategories();
+
+      delete cats.pk;
+      delete cats.sk;
+      setCategories(Object.keys(cats));
+    };
+    getData();
+  }, []);
   const navLinks = session?.user?.role === "admin" ? adminLinks : userLinks;
 
   return (
@@ -48,16 +49,28 @@ export default function NavBar() {
       <Link href={"/"}>
         <Image src={"/logo.png"} height="50" width="50" alt="brand-logo" />
       </Link>
-      <ul className="align-self-start ml-14 hidden grow gap-16 lg:flex text-sm font-semibold uppercase">
+      <ul className="align-self-start ml-14 hidden grow gap-16 text-sm font-semibold uppercase lg:flex">
         <li>
           <DropdownMenu modal={false} open={isOpen} onOpenChange={setIsOpen}>
-            <DropdownMenuTrigger onMouseEnter={() => setIsOpen(true)} className="uppercase text-sm font-semibold flex gap-2 items-center cursor-pointer">Categories<ChevronDown size={18} /></DropdownMenuTrigger>
-            <DropdownMenuContent onMouseLeave={() => setIsOpen(false)} >
+            <DropdownMenuTrigger
+              onMouseEnter={() => setIsOpen(true)}
+              className="flex cursor-pointer items-center gap-2 text-sm font-semibold uppercase"
+            >
+              Categories
+              <ChevronDown size={18} />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent onMouseLeave={() => setIsOpen(false)}>
               {categories?.map((category) => (
-                <Link key={category} href={session?.user.role === 'admin' ? `/admin/category/${category}` : `/category/${category}`} className="capitalize cursor-pointer">
-                  <DropdownMenuItem>
-                    {category}
-                  </DropdownMenuItem>
+                <Link
+                  key={category}
+                  href={
+                    session?.user.role === "admin"
+                      ? `/admin/category/${category}`
+                      : `/category/${category}`
+                  }
+                  className="cursor-pointer capitalize"
+                >
+                  <DropdownMenuItem>{category}</DropdownMenuItem>
                 </Link>
               ))}
             </DropdownMenuContent>
@@ -71,7 +84,7 @@ export default function NavBar() {
       </ul>
       <div className="flex items-center gap-10">
         <DropdownMenu>
-          <DropdownMenuTrigger className="pr-2 lg:hidden" >
+          <DropdownMenuTrigger className="pr-2 lg:hidden">
             <div className="flex h-5 flex-col justify-around">
               <div className="bg-foreground h-[2px] w-5" />
               <div className="bg-foreground h-[2px] w-5" />
@@ -84,10 +97,16 @@ export default function NavBar() {
               <DropdownMenuPortal>
                 <DropdownMenuSubContent>
                   {categories?.map((category) => (
-                    <Link key={category} href={session?.user.role === 'admin' ? `/admin/category/${category}` : `/category/${category}`} className="capitalize">
-                      <DropdownMenuItem>
-                        {category}
-                      </DropdownMenuItem>
+                    <Link
+                      key={category}
+                      href={
+                        session?.user.role === "admin"
+                          ? `/admin/category/${category}`
+                          : `/category/${category}`
+                      }
+                      className="capitalize"
+                    >
+                      <DropdownMenuItem>{category}</DropdownMenuItem>
                     </Link>
                   ))}
                 </DropdownMenuSubContent>
@@ -95,9 +114,7 @@ export default function NavBar() {
             </DropdownMenuSub>
             {Object.keys(navLinks).map((link) => (
               <Link key={link} href={navLinks[link]} className="capitalize">
-                <DropdownMenuItem>
-                  {link}
-                </DropdownMenuItem>
+                <DropdownMenuItem>{link}</DropdownMenuItem>
               </Link>
             ))}
             <DropdownMenuItem>

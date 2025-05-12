@@ -1,7 +1,7 @@
 import CategoryForm from "@/components/forms/CategoryForm";
 import { Button } from "@/components/ui/button";
 import { productMetadata } from "@/lib/types";
-import { getCategories } from "@/lib/utils";
+import { getCategories, getProductsByCategory } from "@/lib/utils";
 import { Pencil, Plus } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -20,14 +20,8 @@ const CategoryPage = async ({
   params: Promise<{ category: string }>;
 }) => {
   const { category } = await params;
-  const categories = await getCategories()
-  const res = await fetch(
-    `https://${process.env.NEXT_PUBLIC_BACKEND_URL}/${process.env.NEXT_PUBLIC_STAGE}/categories/${category}`,
-    {
-      cache: "reload"
-    }
-  );
-  const products: productMetadata[] = await res.json();
+  const categories = await getCategories();
+  const products: productMetadata[] = await getProductsByCategory(category);
   return (
     <main>
       <section className="flex gap-4">
@@ -54,7 +48,10 @@ const CategoryPage = async ({
 
             <Dialog>
               <DialogTrigger asChild>
-                <Button><Plus />Product</Button>
+                <Button>
+                  <Plus />
+                  Product
+                </Button>
               </DialogTrigger>
               <DialogContent
                 aria-describedby="add product form"
@@ -71,7 +68,7 @@ const CategoryPage = async ({
       </section>
       <h2 className="m-2 mt-8 text-xl font-semibold">All {category}s</h2>
       {products.map((product) => {
-        const cat = product.pk.split(":")[1]
+        const cat = product.pk.split(":")[1];
         return (
           <div
             key={product.sk}
@@ -90,7 +87,7 @@ const CategoryPage = async ({
               />
               <div className="m-2 mb-4 flex grow flex-col justify-start">
                 <p className="font-semibold capitalize">{product.title}</p>
-                <p className="text-sm font-light capitalize">{ }</p>
+                <p className="text-sm font-light capitalize">{}</p>
                 <span className="mt-2">Rs. {product.price}</span>
               </div>
             </Link>
