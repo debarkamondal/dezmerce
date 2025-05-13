@@ -55,10 +55,16 @@ const formSchema = z.object({
   images:
     typeof window === "undefined"
       ? z.any()
-      : z
-          .instanceof(FileList)
-          .refine((files) => files.length > 1, "Atleast 2 images required."),
-  thumbnail: typeof window === "undefined" ? z.any() : z.instanceof(FileList),
+      : z.union([
+          z.string().array(),
+          z
+            .instanceof(FileList)
+            .refine((files) => files.length > 1, "Atleast 2 images required."),
+        ]),
+  thumbnail:
+    typeof window === "undefined"
+      ? z.any()
+      : z.union([z.string(), z.instanceof(FileList)]),
   specs: z
     .array(
       z.object({
@@ -86,6 +92,7 @@ export function ProductForm({
 }) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [initState, setInitState] = useState<Product & Record<string, any>>();
   const [categories, setCategories] = useOptimistic(
     Object.keys(cats).filter((e) => e !== "pk" && e !== "sk"),
     (currentState, optimisticValue: string[]) => [
@@ -110,6 +117,7 @@ export function ProductForm({
     async function getData() {
       if (id) {
         const data: Product = await getProductById(id);
+        setInitState(data);
         if (data) {
           form.reset({
             title: data.title ?? "",
@@ -117,6 +125,8 @@ export function ProductForm({
             category: data.category ?? "",
             gender: data.gender ?? "male",
             price: data.price ?? 0,
+            images: data.images,
+            thumbnail: data.thumbnail,
             specs: Object.keys(data.specs).map((key) => ({
               key,
               value: data.specs[key],
@@ -136,58 +146,92 @@ export function ProductForm({
   const thumbnailRef = form.register("thumbnail");
 
   // 2. Define a submit handler.
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    setIsLoading(true);
-    let specArr: Record<string, string> = {};
+  async function onSubmit(
+    values: z.infer<typeof formSchema> & Record<string, any>,
+  ) {
+    const updated: Partial<Product> & Record<string, any> = {};
+    let specs: Record<string, string> = {};
 
     //formating specs which are in form [{key:string, value:string}] to {key:value}
     values.specs?.forEach((spec) => {
-      if (spec.key && spec.value)
-        specArr = { ...specArr, [spec.key]: spec.value };
+      if (spec.key && spec.value) specs = { ...specs, [spec.key]: spec.value };
     });
-    let payload: Partial<Product> = {
-      title: values.title,
-      price: values.price,
-      gender: values.gender,
-      category: values.category,
-      description: values.description,
-      images: [],
-      thumbnail: values.thumbnail[0].name,
-      specs: specArr,
-    };
-    for (const image of values.images) {
-      payload = {
-        ...payload,
-        images: payload.images ? [...payload.images, image.name] : [image.name],
-      };
-    }
-    let product;
-    if (!id) product = await addProduct(payload);
-    else {
-      //FIX: Make this work
-    }
 
-    await fetch(product.thumbnail, {
-      method: "PUT",
-      headers: { "Content-Type": values.thumbnail[0].type },
-      body: values.thumbnail[0],
-    });
-    let imageRes = [];
-    for (let i = 0; i < product.imageUrls.length; i++) {
-      imageRes.push(
-        await fetch(product.imageUrls[i], {
-          method: "PUT",
-          headers: { "Content-Type": values.images[i].type },
-          body: values.images[i],
-        }),
-      );
+    if (!initState) return;
+    for (const item in values) {
+      if (values[item] === initState[item]) continue;
+      if (item === "images" && values.images.length) {
+        updated.images = [];
+        for (let i = 0; i < values.images.length; i++) {
+          if (
+            values.images[i].name &&
+            initState.images[i] !== values.images[i].name
+          )
+            updated.images?.push(values.images[i].name);
+        }
+        if (!updated.images?.length) delete updated.images;
+        continue;
+      }
+      if (item === "specs") {
+        if (values.specs?.length !== Object.keys(initState.specs).length) {
+          updated.specs = specs;
+          break;
+        }
+        for (const spec in initState.specs) {
+          if (initState.specs[spec] !== specs[spec]) {
+            updated.specs = specs;
+            break;
+          }
+        }
+        continue;
+      }
+      if (initState[item] !== values[item]) updated[item] = values[item];
     }
-    imageRes = imageRes.filter((res) => res.status === 200);
-    // TODO: Handle update product
-    setIsLoading(false);
-    revalidatepath("/admin/dashboard");
-    if (setIsDialogOpen) setIsDialogOpen(false);
-    router.back();
+    console.log(updated);
+    // setIsLoading(true);
+    // let payload: Partial<Product> = {
+    //   title: values.title,
+    //   price: values.price,
+    //   gender: values.gender,
+    //   category: values.category,
+    //   description: values.description,
+    //   images: [],
+    //   thumbnail: values.thumbnail[0].name,
+    //   specs: specArr,
+    // };
+    // for (const image of values.images) {
+    //   payload = {
+    //     ...payload,
+    //     images: payload.images ? [...payload.images, image.name] : [image.name],
+    //   };
+    // }
+    // let product;
+    // if (!id) product = await addProduct(payload);
+    // else {
+    //   //FIX: Make update work
+    // }
+    //
+    // await fetch(product.thumbnail, {
+    //   method: "PUT",
+    //   headers: { "Content-Type": values.thumbnail[0].type },
+    //   body: values.thumbnail[0],
+    // });
+    // let imageRes = [];
+    // for (let i = 0; i < product.imageUrls.length; i++) {
+    //   imageRes.push(
+    //     await fetch(product.imageUrls[i], {
+    //       method: "PUT",
+    //       headers: { "Content-Type": values.images[i].type },
+    //       body: values.images[i],
+    //     }),
+    //   );
+    // }
+    // imageRes = imageRes.filter((res) => res.status === 200);
+    // // TODO: Handle update product
+    // setIsLoading(false);
+    // revalidatepath("/admin/dashboard");
+    // if (setIsDialogOpen) setIsDialogOpen(false);
+    // router.back();
   }
 
   return (
