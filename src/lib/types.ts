@@ -22,11 +22,12 @@ export type Product = {
   };
 };
 export type productMetadata = {
-  pk: string;
-  sk: string;
+  category: string;
+  id: string;
   thumbnail: string;
   price: number;
   title: string;
+  gender: "male" | "female";
 };
 
 export type category = {

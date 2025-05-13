@@ -16,18 +16,17 @@ const CategoryPage = async ({
         All {category}&apos;s
       </h2>
       {products.map((product) => {
-        const cat = product.pk.split(":")[1];
         return (
           <div
-            key={product.sk}
+            key={product.id}
             className="my-2 flex min-h-24 gap-2 rounded-md p-2 shadow"
           >
             <Link
-              href={`/products/${cat}-${product.sk}`}
+              href={`/products/${product.category}-${product.id}`}
               className="relative flex grow"
             >
               <Image
-                src={`https://${process.env.NEXT_PUBLIC_S3_URL}/products/${cat}/${product.sk}/${product.thumbnail}`}
+                src={`https://${process.env.NEXT_PUBLIC_S3_URL}/products/${product.category}/${product.id}/${product.thumbnail}`}
                 height={300}
                 width={200}
                 alt={`${product.title}-img`}
