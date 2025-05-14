@@ -18,7 +18,6 @@ export default function ImageCarousel({
   id: string;
   className: string;
 }) {
-  console.log(category)
   return (
     <Carousel
       className={className}

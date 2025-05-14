@@ -16,19 +16,19 @@ export default async function Product({
   const data: Product = {
     id: product.id,
     thumbnail: product.thumbnail,
-    category: product.category.split(":")[1],
-    gender: "male",
+    category: product.category,
+    gender: product.gender ?? "male",
     title: product.title,
     defaultDelivery: "12Jan",
     price: product.price,
     ratings: [3, 2024],
     images: product.images,
     variants: [
-      ["4 MB", "/products/1"],
-      ["8 MB", "/products/2"],
-      ["16 MB", "/products/3"],
-      ["32 MB", "/products/4"],
-      ["64 MB", "/products/5"],
+      ["4 MB", "/product/1"],
+      ["8 MB", "/product/2"],
+      ["16 MB", "/product/3"],
+      ["32 MB", "/product/4"],
+      ["64 MB", "/product/5"],
     ],
     description: product.description,
     specs: product.specs,
@@ -56,7 +56,7 @@ export default async function Product({
           }}
         />
         <DeliveryBox defaultDelivery={data.defaultDelivery} />
-        <VariantSelector variants={data.variants} />
+        {data.variants && <VariantSelector variants={data.variants} />}
         <h2 className="text-lg font-semibold">Product Infomation</h2>
         <Table className="mx-auto my-4 max-w-96 text-center md:my-8">
           <TableBody>

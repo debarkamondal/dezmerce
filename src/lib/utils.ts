@@ -23,7 +23,7 @@ export async function getProductsByCategory(category: string) {
 }
 export async function getProductById(id: string) {
   const product = await fetch(
-    `https://${process.env.NEXT_PUBLIC_BACKEND_URL}/${process.env.NEXT_PUBLIC_STAGE}/products/${id}`,
+    `https://${process.env.NEXT_PUBLIC_BACKEND_URL}/${process.env.NEXT_PUBLIC_STAGE}/product/${id}`,
   );
   return await product.json();
 }

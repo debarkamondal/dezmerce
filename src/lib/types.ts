@@ -15,7 +15,7 @@ export type Product = {
   price: number;
   ratings: Array<number>;
   images: Array<string>;
-  variants: Array<Array<string>>;
+  variants?: Array<Array<string>>;
   description: string;
   specs: {
     [key: string]: string;

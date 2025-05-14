@@ -44,14 +44,14 @@ export const addProduct = async (product: Partial<Product>) => {
   return await data.json();
 };
 
-export const deleteProduct = async (id: string) => {
+export const deleteProduct = async (category: string, id: string) => {
   const cookieStore = await cookies();
   await fetch(`https://api.dkmondal.in/test/admin/products`, {
     headers: {
       Authorization: cookieStore.get("auth")?.value as string,
     },
     method: "DELETE",
-    body: JSON.stringify({ id }),
+    body: JSON.stringify({ category, id }),
   });
 };
 
@@ -63,7 +63,7 @@ export const addCategory = async (category: string, image: string) => {
     },
     method: "POST",
     body: JSON.stringify({
-      category,
+      category: category.toLowerCase(),
       image: `${category}.${image.split(".")[image.split(".").length - 1]}`,
     }),
   });
@@ -81,7 +81,7 @@ export const updateCategory = async (
     },
     method: "PATCH",
     body: JSON.stringify({
-      initCategory,
+      initCategory: initCategory.toLowerCase(),
       updated,
     }),
   });

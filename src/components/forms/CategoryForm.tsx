@@ -121,7 +121,7 @@ const CategoryForm = ({
             className="capitalize"
             placeholder="Enter Category"
             value={category}
-            onChange={(e) => setCategory(e.target.value)}
+            onChange={(e) => setCategory(e.target.value.toLowerCase())}
           />
           <Button
             disabled={isLoading || (category === initCategory && !catImg)}
