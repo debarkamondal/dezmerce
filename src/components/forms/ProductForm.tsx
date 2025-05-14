@@ -15,12 +15,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Product } from "@/lib/types";
-import {
-  addProduct,
-  deleteProduct,
-  revalidatepath,
-  revalidatetag,
-} from "@/lib/actions";
+import { addProduct, revalidatepath, revalidatetag } from "@/lib/actions";
 import {
   Dispatch,
   ReactNode,
@@ -151,9 +146,7 @@ export function ProductForm({
   const thumbnailRef = form.register("thumbnail");
 
   // 2. Define a submit handler.
-  async function onSubmit(
-    values: z.infer<typeof formSchema> & Record<string, any>,
-  ) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     let specs: Record<string, string> = {};
 
     //formating specs which are in form [{key:string, value:string}] to {key:value}
@@ -472,7 +465,7 @@ export function ProductForm({
             className="w-full"
             variant="destructive"
             onClick={() => {
-              deleteProduct(id);
+              // deleteProduct();
               revalidatepath("/admin/products");
             }}
           >
