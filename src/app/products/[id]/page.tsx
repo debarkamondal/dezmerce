@@ -49,6 +49,7 @@ export default async function Product({
         <span className="font-bold">&#8377; {data.price}</span>
         <AddToCartButton
           product={{
+            category: data.category,
             id: data.id,
             title: data.title,
             price: data.price,
