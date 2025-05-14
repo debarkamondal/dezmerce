@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { deleteProduct, revalidatepath } from "@/lib/actions";
+import { deleteProduct, revalidatepath, revalidatetag } from "@/lib/actions";
 
 const DeleteProductButton = ({
   category,
@@ -12,6 +12,7 @@ const DeleteProductButton = ({
   const handleClick = async () => {
     await deleteProduct(category, id);
     revalidatepath(`/admin/category/${category}`);
+    revalidatetag(`categories`);
   };
   return (
     <Button variant={"destructive"} onClick={handleClick}>
