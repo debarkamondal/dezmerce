@@ -35,9 +35,6 @@ export default function NavBar() {
   useEffect(() => {
     const getData = async () => {
       const cats = await getCategories();
-
-      delete cats.pk;
-      delete cats.sk;
       setCategories(Object.keys(cats));
     };
     getData();

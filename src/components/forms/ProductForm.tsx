@@ -92,7 +92,7 @@ export function ProductForm({
 }) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  // const [initState, setInitState] = useState<Product & Record<string, any>>();
+  //const [initState, setInitState] = useState<Product & Record<string, any>>();
   const [categories, setCategories] = useOptimistic(
     Object.keys(cats).filter((e) => e !== "pk" && e !== "sk"),
     (currentState, optimisticValue: string[]) => [
@@ -465,7 +465,7 @@ export function ProductForm({
             className="w-full"
             variant="destructive"
             onClick={() => {
-              // deleteProduct();
+              // deleteProduct(id);
               revalidatepath("/admin/products");
             }}
           >

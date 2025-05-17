@@ -33,7 +33,7 @@ const Cart = () => {
           <Link href={`/product/${item.category}-${item.id}`} key={item.id}>
             <DropdownMenuItem className="flex">
               <Image
-                src={`https://${process.env.NEXT_PUBLIC_S3_URL}/products/${item.category}/${item.id}/${item.image}`}
+                src={`https://${process.env.NEXT_PUBLIC_S3_URL}/products/${item.category}/${item.id}/${item.thumbnail}`}
                 className="size-24 object-contain"
                 height={300}
                 width={200}

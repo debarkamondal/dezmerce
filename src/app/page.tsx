@@ -1,148 +1,108 @@
 import HeroCarousel from "@/components/HeroCarousel";
-import ProductGrid from "@/components/ProductGrid";
+import CardGrid from "@/components/ProductGrid";
+import { category } from "@/lib/types";
+import { getCategories } from "@/lib/utils";
 import Image from "next/image";
+import Link from "next/link";
 
 const carouselData = [
   {
-    hook: "Latest releases for",
-    category: "Women",
+    hook: "Newly released",
+    category: "Pants",
+    price: 799,
+    thumbnail: "pants.webp",
+    link: "/category/pants",
+  },
+  {
+    hook: "Newly released",
+    category: "Skirts",
     price: 999,
-    image: "/hero-1.jpg",
+    thumbnail: "skirt.webp",
+    link: "/category/pants",
   },
   {
-    hook: "Latest releases for",
-    category: "Men",
+    hook: "Newly released",
+    category: "Perfumes",
     price: 999,
-    image: "/hero-2.jpg",
-  },
-  {
-    hook: "Latest releases for",
-    category: "Angles",
-    price: 999,
-    image: "/hero-3.jpg",
-  },
-];
-
-const topCollection = [
-  {
-    id: "1",
-    category: "jacket",
-    title: "Black Bobber Jacket",
-    image: "https://m.media-amazon.com/images/I/61YHIjqyyxL._SY879_.jpg",
-    url: "/products/1",
-    price: 2500,
-  },
-  {
-    id: "2",
-    category: "jacket",
-    title: "'Wolver' Men's Slim Fit Casula Blazer",
-    image: "https://m.media-amazon.com/images/I/71SOJLGt4NL._SY879_.jpg",
-    url: "/products/1",
-    price: 500,
-  },
-  {
-    category: "jacket",
-    id: "3",
-    title: "Nike Men's Free Metcon 6",
-    image: "https://m.media-amazon.com/images/I/715T+4gyZuL._SX695_.jpg",
-    url: "/products/1",
-    price: 500,
-  },
-  {
-    category: "jacket",
-    id: "4",
-    title: "Long skirt Bohemian Style Animal Print",
-    image: "https://m.media-amazon.com/images/I/51s31jd2UGL.jpg",
-    url: "/products/1",
-    price: 500,
+    thumbnail: "perfume.webp",
+    link: "/category/perfume",
   },
 ];
 
 const marvelCollection = [
   {
-    category: "jacket",
-    id: "4",
-    title: "Venom: Spider x Venomi T-shirt",
-    image:
-      "https://prod-img.thesouledstore.com/public/theSoul/uploads/catalog/product/1729684355_9129367.jpg?format=webp&w=480&dpr=1.8",
-    url: "/products/1",
-    price: 499,
-  },
-  {
-    id: "2",
-    category: "jacket",
-    title: "Black Panther: The Suit",
-    image:
-      "https://prod-img.thesouledstore.com/public/theSoul/uploads/catalog/product/1639399142_5592242.jpg?format=webp&w=480&dpr=1.8",
-    url: "/products/1",
+    id: "01JVEBC4PCHYJSVQDTCXJ4KRB7",
+    category: "perfume",
+    title: "Black Panther: The King ",
+    thumbnail: "perfume5-1.webp",
+    url: "/products/perfume-01JVEBC4PCHYJSVQDTCXJ4KRB7",
     price: 999,
   },
   {
-    id: "3",
-    category: "jacket",
-    title: "Avengers: Denim Jogger",
-    image:
-      "https://prod-img.thesouledstore.com/public/theSoul/uploads/catalog/product/1669136060_5606366.jpg?format=webp&w=480&dpr=1.8",
-    url: "/products/1",
-    price: 749,
+    id: "01JVEB60AHWTPAT9F72MQVPKNB",
+    category: "pants",
+    title: "Thor: Mighty Avenger ",
+    thumbnail: "pants5-1.webp",
+    url: "/products/pants-01JVEB60AHWTPAT9F72MQVPKNB",
+    price: 2199,
   },
   {
-    id: "4",
-    category: "jacket",
-    title: "Deadpool: Anti-Hero T-shirt",
-    image:
-      "https://prod-img.thesouledstore.com/public/theSoul/uploads/catalog/product/Deadpool--Anti-Hero-Oversized-T-Shirts-12024_07_23-22-41-54.jpg?format=webp&w=480&dpr=1.8",
-    url: "/products/1",
-    price: 1199,
+    id: "01JVEAZPFM4E2VTYZWD43WNQVD",
+    category: "tshirt",
+    title: "Truck Art: Iron Man ",
+    thumbnail: "tshirt5-1.webp",
+    url: "/products/tshirt-01JVEAZPFM4E2VTYZWD43WNQVD",
+    price: 699,
+  },
+  {
+    id: "01JVBRCDJW4BK20M0MECBZFTK1",
+    category: "sneakers",
+    title: "Deadpool: Utility Suit ",
+    thumbnail: "sneakers4-1.webp",
+    url: "/products/sneakers-01JVBRCDJW4BK20M0MECBZFTK1",
+    price: 2599,
   },
 ];
 
 const dCCollection = [
   {
-    id: "1",
-    category: "jacket",
-    title: "Harley Quinn: Baddie Women oversized T-shirt",
-    image:
-      "https://prod-img.thesouledstore.com/public/theSoul/uploads/catalog/product/1728626524_2529480.jpg?format=webp&w=480&dpr=1.8",
-    url: "/products/1",
-    price: 499,
-  },
-  {
-    id: "2",
-    title: "Harley Quinn: Crop Top",
-    category: "jacket",
-    image:
-      "https://prod-img.thesouledstore.com/public/theSoul/uploads/catalog/product/1728295408_9922674.jpg?format=webp&w=480&dpr=1.8",
-    url: "/products/1",
-    price: 449,
-  },
-  {
-    id: "3",
-    category: "jacket",
-    title: "Colourblock Pullover: Superman",
-    image:
-      "https://prod-img.thesouledstore.com/public/theSoul/uploads/catalog/product/1731665024_4273808.jpg?format=webp&w=480&dpr=1.8",
-    url: "/products/1",
+    id: "01JVEDCK5TRCQJ04S2M01PQR53",
+    category: "perfume",
+    title: "Batman: Rebirth ",
+    thumbnail: "perfume6-1.webp",
+    url: "/products/perfume-Batman: Rebirth ",
     price: 899,
   },
   {
-    id: "4",
-    category: "jacket",
-    title: "Batman: The Dark Knight Sneaker",
-    image:
-      "https://prod-img.thesouledstore.com/public/theSoul/uploads/catalog/product/1699360430_5340006.gif?format=webp&w=480&dpr=1.8",
-    url: "/products/1",
-    price: 2999,
+    id: "01JVECMMYPW056Z2HQKB12R10H",
+    category: "pants",
+    title: "Wonder Woman: Warrior (Wide Leg Fit) ",
+    thumbnail: "pants6-1.webp",
+    url: "/products/pants-01JVECMMYPW056Z2HQKB12R10H",
+    price: 1599,
+  },
+  {
+    id: "01JVECQMKBNXC00XV8BSXM41DK",
+    category: "tshirt",
+    title: "DC: Catwoman ",
+    thumbnail: "tshirt6-1.webp",
+    url: "/products/tshirt-01JVECQMKBNXC00XV8BSXM41DK",
+    price: 799,
+  },
+  {
+    id: "01JVBR7V4J2NDM3RA6DP0EWENP",
+    category: "sneakers",
+    title: "Batman: The Dark Knight 2.0 ",
+    thumbnail: "sneaker3-1.webp",
+    url: "/products/sneakers-01JVBR7V4J2NDM3RA6DP0EWENP",
+    price: 3399,
   },
 ];
-export default function Home() {
+export default async function Home() {
+  const categories: Record<string, category> = await getCategories();
   return (
     <div className="p-2 md:mt-4 md:px-8 xl:px-40">
       <HeroCarousel carouselData={carouselData} />
-      <h2 className="text-primary font-alex-brush my-8 text-center text-4xl font-semibold md:text-6xl lg:my-16">
-        Top Collection
-      </h2>
-      <ProductGrid products={topCollection} className="md:grid-cols-4" />
       <h2 className="text-primary font-alex-brush my-8 text-center text-4xl font-semibold md:text-6xl lg:my-16">
         Official Merch
       </h2>
@@ -155,7 +115,7 @@ export default function Home() {
             alt="Marvel-logo"
             className="mx-auto mb-4 w-32 object-fill"
           />
-          <ProductGrid products={marvelCollection} />
+          <CardGrid products={marvelCollection} />
         </div>
         <div className="rounded-md bg-blue-100 p-4 md:w-1/2">
           <Image
@@ -165,8 +125,31 @@ export default function Home() {
             alt="DC-logo"
             className="mx-auto mb-4 w-14 object-fill"
           />
-          <ProductGrid products={dCCollection} />
+          <CardGrid products={dCCollection} />
         </div>
+      </div>
+      <h2 className="text-primary font-alex-brush my-8 text-center text-4xl font-semibold md:text-6xl lg:my-16">
+        Our Categories
+      </h2>
+      <div className="grid grid-cols-2 items-center gap-2 md:grid-cols-4 lg:gap-4">
+        {Object.keys(categories).map((category, index) => (
+          <Link
+            href={`/category/${category}`}
+            key={category}
+            className={`${Object.keys(categories).length - 1 === index ? "col-span-full justify-self-center md:w-fit" : ""} border-secondary bg-background rounded-md border shadow`}
+          >
+            <Image
+              src={`https://${process.env.NEXT_PUBLIC_S3_URL}/categories/${categories[category].image}`}
+              height={300}
+              width={150}
+              alt={"product-thumbnail"}
+              className="m-auto size-44 rounded-md object-scale-down pt-2 md:size-60 lg:size-80"
+            />
+            <div className="mt-2 rounded-b-md bg-gray-100 px-4">
+              <p className="truncate font-semibold capitalize">{category}</p>
+            </div>
+          </Link>
+        ))}
       </div>
     </div>
   );

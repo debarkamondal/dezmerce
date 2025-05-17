@@ -47,15 +47,7 @@ export default async function Product({
           {data.ratings[0]} stars | {data.ratings[1]} reviews
         </span>
         <span className="font-bold">&#8377; {data.price}</span>
-        <AddToCartButton
-          product={{
-            category: data.category,
-            id: data.id,
-            title: data.title,
-            price: data.price,
-            image: data.thumbnail,
-          }}
-        />
+        <AddToCartButton product={{ ...data }} />
         <DeliveryBox defaultDelivery={data.defaultDelivery} />
         {data.variants && <VariantSelector variants={data.variants} />}
         <h2 className="text-lg font-semibold">Product Infomation</h2>

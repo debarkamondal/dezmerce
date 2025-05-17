@@ -11,12 +11,14 @@ import { cn } from "@/lib/utils";
 import { ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Autoplay from "embla-carousel-autoplay";
+import Link from "next/link";
 
 type CarouselData = {
   hook: string;
   category: string;
   price: number;
-  image: string;
+  thumbnail: string;
+  link: string;
 };
 
 const HeroCarousel = (props: { carouselData: CarouselData[] }) => {
@@ -31,32 +33,34 @@ const HeroCarousel = (props: { carouselData: CarouselData[] }) => {
       <CarouselContent>
         {props.carouselData.map((item) => {
           return (
-            <CarouselItem className="relative" key={item.image}>
-              <div className="flex items-center justify-evenly">
-                <div className="text-secondary md:text-primary from-primary/70 absolute bottom-0 left-4 grow rounded-b-xl bg-linear-to-r to-60% p-4 md:static md:grow-0 md:space-y-4 md:bg-none">
-                  <p className="text-xl font-light md:mx-4 md:text-4xl">
-                    {item.hook}
-                  </p>
-                  <p
-                    className={`font-alex-brush text-5xl font-normal md:text-9xl`}
-                  >
-                    {item.category}
-                  </p>
-                  <p className="font-medium md:mx-4">
-                    Starting from &#8377; {item.price}*{" "}
-                  </p>
-                  <Button className="bg-secondary md:bg-primary mt-2 h-16 w-16 rounded-full">
-                    <ChevronRight className="text-primary md:text-secondary size-8" />
-                  </Button>
+            <CarouselItem key={item.thumbnail}>
+              <Link href={item.link} className="cursor-pointer">
+                <div className="relative flex items-center justify-evenly overflow-hidden">
+                  <div className="text-secondary md:text-primary from-primary/80 absolute bottom-0 left-0 w-full overflow-hidden rounded-md rounded-bl-xl bg-linear-to-r to-70% p-4 md:static md:grow-0 md:space-y-4 md:bg-none">
+                    <p className="text-xl font-light md:mx-4 md:text-4xl">
+                      {item.hook}
+                    </p>
+                    <p
+                      className={`font-alex-brush text-5xl font-normal md:text-9xl`}
+                    >
+                      {item.category}
+                    </p>
+                    <p className="font-medium md:mx-4">
+                      Starting from &#8377; {item.price}*{" "}
+                    </p>
+                    <Button className="bg-secondary md:bg-primary mt-2 h-16 w-16 rounded-full">
+                      <ChevronRight className="text-primary md:text-secondary size-8" />
+                    </Button>
+                  </div>
+                  <Image
+                    src={`https://${process.env.NEXT_PUBLIC_S3_URL}/categories/${item.thumbnail}`}
+                    height={900}
+                    width={800}
+                    alt="hero-image-1"
+                    className="w-full rounded-xl md:w-72 lg:min-w-96"
+                  />
                 </div>
-                <Image
-                  src={item.image}
-                  height={900}
-                  width={800}
-                  alt="hero-image-1"
-                  className="w-full rounded-xl md:w-72 lg:min-w-96"
-                />
-              </div>
+              </Link>
             </CarouselItem>
           );
         })}

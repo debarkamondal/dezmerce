@@ -17,9 +17,6 @@ const chartData = [
 
 const adminProducts = async () => {
   const categories: { [name: string]: category } = await getCategories();
-
-  delete categories.pk;
-  delete categories.sk;
   return (
     <main>
       <div className="mx-4 flex items-center justify-between">
