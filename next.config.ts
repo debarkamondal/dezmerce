@@ -9,10 +9,6 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "prod-img.thesouledstore.com",
-      },
-      {
-        protocol: "https",
         hostname: process.env.NEXT_PUBLIC_S3_URL as string,
       },
     ],

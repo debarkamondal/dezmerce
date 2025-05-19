@@ -30,7 +30,7 @@ const Cart = () => {
         <DropdownMenuLabel className="text-center">Cart</DropdownMenuLabel>
         <DropdownMenuSeparator />
         {cart?.map((item) => (
-          <Link href={`/product/${item.category}-${item.id}`} key={item.id}>
+          <Link href={`/products/${item.category}-${item.id}`} key={item.id}>
             <DropdownMenuItem className="flex">
               <Image
                 src={`https://${process.env.NEXT_PUBLIC_S3_URL}/products/${item.category}/${item.id}/${item.thumbnail}`}
@@ -54,11 +54,8 @@ const Cart = () => {
           <p>Total Price: </p>
           <p>&#8377; {totalPrice}</p>
         </DropdownMenuLabel>
-        <Link
-          href="/checkout"
-          className={`${buttonVariants()} mt-2 w-full p-4`}
-        >
-          Check Out
+        <Link href="/cart" className={`${buttonVariants()} mt-2 w-full p-4`}>
+          Go to Cart
         </Link>
       </DropdownMenuContent>
     </DropdownMenu>

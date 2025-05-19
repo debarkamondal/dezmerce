@@ -13,9 +13,9 @@ import {
 } from "react";
 
 type actionType = {
-  type: "add" | "delete" | "increase" | "initiate";
+  type: "add" | "delete" | "increase" | "initiate" | "update";
   item?: CartItem;
-  initialState?: CartItem[];
+  state?: CartItem[];
   user?: User;
 };
 
@@ -31,10 +31,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
     if (!data?.user && typeof window !== undefined) {
       const initialState = localStorage.getItem("cart");
       if (initialState)
-        dispatch({ type: "initiate", initialState: JSON.parse(initialState!) });
+        dispatch({ type: "initiate", state: JSON.parse(initialState!) });
     } else {
       getCart().then((cart) => {
-        if (cart.length) dispatch({ type: "initiate", initialState: cart });
+        if (cart.length) dispatch({ type: "initiate", state: cart });
       });
     }
   }, [data?.user]);
@@ -72,7 +72,10 @@ const reducer = (cart: Array<CartItem> | undefined, action: actionType) => {
       if (!action.user) localStorage.setItem("cart", JSON.stringify(temp));
       return temp;
     case "initiate":
-      return action.initialState;
+      return action.state;
+
+    case "update":
+      return action.state;
     default:
       return cart;
   }

@@ -13,13 +13,18 @@ const AddToCartButton = ({ product }: { product: Omit<CartItem, "qty"> }) => {
   const cart = useCartContext();
   const user = useSession();
   let tempCart: CartItem[] = [];
-  let item;
+  let item: CartItem | undefined;
+  const { id, title, thumbnail, category, price } = product;
   if (cart) item = cart.filter((item) => item.id === product.id)[0];
-  if (!item) item = { ...product, qty: 0 };
+  if (!item) item = { id, title, thumbnail, category, price, qty: 0 };
   else tempCart = cart.filter((item) => item.id !== product.id);
 
   const handleAdd = async () => {
-    if (user) setCart([...tempCart, { ...item, qty: item.qty + 1 }]);
+    if (user)
+      setCart([
+        ...tempCart,
+        { id, title, thumbnail, category, price, qty: item.qty + 1 },
+      ]);
     dispatch({
       type: "add",
       item: item,
@@ -27,7 +32,11 @@ const AddToCartButton = ({ product }: { product: Omit<CartItem, "qty"> }) => {
     });
   };
   const handleDelete = async () => {
-    if (user) setCart([...tempCart, { ...item, qty: item.qty - 1 }]);
+    if (user)
+      setCart([
+        ...tempCart,
+        { id, title, thumbnail, category, price, qty: item.qty - 1 },
+      ]);
     dispatch({
       type: "delete",
       item: item,
