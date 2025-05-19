@@ -1,7 +1,7 @@
 const CancellationAndRefund = () => {
   return (
     <>
-      <h1 className="my-8 text-4xl font-semibold">Cancellation & Refund</h1>
+      <h1 className="my-8 text-4xl font-semibold">Cancellation and Refund</h1>
       <p>
         This is a website to add to my portfolio. This page is only a
         placeholder for Razorpay. We are not selling anything please so there is
