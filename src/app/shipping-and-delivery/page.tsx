@@ -1,7 +1,7 @@
 const ShippingAndDelivery = () => {
   return (
     <>
-      <h1>Shipping and Delivery</h1>
+      <h1 className="text-3xl font-semibold">Shipping and Delivery</h1>
       <p>This website is just for demonstration purposes for my portfolio</p>
       <p>
         Last updated on May 19 2025 For International buyers, orders are shipped
