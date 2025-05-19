@@ -1,44 +1,40 @@
+import Link from "next/link";
+
 const ShippingAndDelivery = () => {
   return (
     <>
       <h1 className="my-8 text-3xl font-semibold">Shipping and Delivery</h1>
-      <h1>Shipping policy</h1>
       <p>
         This shipping policy explains how Debarka Mondal (doing business as
         “Dezire”) operates its shipping procedures and how we strive to meet
         your expectations with every order. Whether you’re a first-time buyer or
         a returning customer, we want to ensure that your experience with us is
         smooth and satisfactory, right from placing your order to the moment it
-        arrives at your doorstep. This policy has been created with the help of
-        the{" "}
-        <a href="https://www.websitepolicies.com/shipping-policy-generator">
-          shipping policy generator
-        </a>
-        .
+        arrives at your doorstep.
       </p>
       <p>
         Please read this shipping policy together with our{" "}
-        <a href="https://www.dkmondal.in/terms-and-conditions">
+        <Link href="https://www.dkmondal.in/terms-and-conditions">
           terms and conditions
-        </a>{" "}
+        </Link>{" "}
         to familiarize yourself with the rest of our general guidelines.
       </p>
       <div className="index">
         <h3>Table of contents</h3>
         <ol className="index">
           <li>
-            <a href="#shipping-and-delivery-options">
+            <Link href="#shipping-and-delivery-options">
               Shipping and Delivery Options
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="#delayed-orders">Delayed Orders</a>
+            <Link href="#delayed-orders">Delayed Orders</Link>
           </li>
           <li>
-            <a href="#returns-and-exchanges">Returns and Exchanges</a>
+            <Link href="#returns-and-exchanges">Returns and Exchanges</Link>
           </li>
           <li>
-            <a href="#contact-information">Contact Information</a>
+            <Link href="#contact-information">Contact Information</Link>
           </li>
         </ol>
       </div>
@@ -96,9 +92,9 @@ const ShippingAndDelivery = () => {
       <p>
         If you have any questions about refunds, returns or exchanges, please
         review our{" "}
-        <a href="https://www.dkmondal.in/cancelltion-and-refund">
+        <Link href="https://www.dkmondal.in/cancelltion-and-refund">
           refund policy
-        </a>
+        </Link>
         .
       </p>
       <h2 id="contact-information">Contact Information</h2>
@@ -108,7 +104,9 @@ const ShippingAndDelivery = () => {
       </p>
       <ul>
         <li>
-          <a href="mailto:debarkamondal@gmail.com">debarkamondal@gmail.com</a>
+          <Link href="mailto:debarkamondal@gmail.com">
+            debarkamondal@gmail.com
+          </Link>
         </li>
       </ul>
       <p>This document was last updated on May 19, 2025</p>
