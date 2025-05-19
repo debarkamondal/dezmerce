@@ -6,7 +6,7 @@ const CancellationAndRefund = () => {
     <div className="mx-auto max-w-4xl px-4 py-8">
       {/* Add SEO metadata for better crawlability */}
       <Head>
-        <title>Cancellation and Refund Policy - Debarka Modal</title>
+        <title>Cancellation and Refund Policy</title>
         <meta
           name="description"
           content="Our official cancellation, return and refund policy at Debarka Modal"
