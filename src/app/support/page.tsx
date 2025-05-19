@@ -27,6 +27,10 @@ const SupportPage = async () => {
             placeholder="Enter your message"
           />
           <Button>Submit</Button>
+          <div className="text-center">
+            <p className="text-primary/30 text-sm">or</p>
+            <p className="text-primary/80">Email at debarkamondal@gmail.com</p>
+          </div>
         </form>
       </div>
     </main>
