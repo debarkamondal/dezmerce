@@ -12,8 +12,11 @@ import { useCartContext } from "./providers/CartProvider";
 import Image from "next/image";
 import Link from "next/link";
 import { buttonVariants } from "./ui/button";
+import { usePathname } from "next/navigation";
 
 const Cart = () => {
+  const pathname = usePathname();
+  console.log(pathname);
   const cart = useCartContext();
   const totalPrice = cart.reduce((totalPrice, item) => {
     return (totalPrice += item.price * item.qty);
@@ -21,7 +24,7 @@ const Cart = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
-        hidden={!totalPrice}
+        hidden={!totalPrice || pathname === "/cart"}
         className={`border-secondary bg-primary text-secondary fixed right-0 bottom-0 m-4 size-16 cursor-pointer rounded-full border-2`}
       >
         <ShoppingCart className="m-auto" size={25} />
