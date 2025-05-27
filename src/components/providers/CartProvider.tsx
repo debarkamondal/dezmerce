@@ -51,7 +51,7 @@ const reducer = (cart: Array<CartItem> | undefined, action: actionType) => {
   let temp: CartItem[];
   switch (action.type) {
     case "add":
-      if (action.item?.qty === 0) return [...cart, { ...action.item, qty: 1 }];
+      if (action.item?.qty === 0) temp = [...cart, { ...action.item, qty: 1 }];
       else
         temp = cart.map((item) => {
           if (item.id === action.item?.id)

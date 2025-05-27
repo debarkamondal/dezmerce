@@ -17,7 +17,6 @@ const PaymentPage = async () => {
         {orderInfo.status === "initiated" ? "Pay" : "Order Status"}
       </h1>
       <section>
-        {/* <PaymentButton paymentInfo={paymentInfo} /> */}
         <h2 className="mt-2 text-lg font-semibold">OrderId</h2>
         <div className="mx-2">
           {orderInfo.id}
@@ -67,7 +66,7 @@ const PaymentPage = async () => {
         <div className="bg-primary mx-auto my-2 mt-4 h-px w-full" />
         <p className="mx-2 flex justify-between text-lg font-bold">
           <span>Total: </span>
-          <span>{orderInfo.total}</span>
+          <span>&#8377;{orderInfo.total}</span>
         </p>
         <div className="bg-primary mx-auto my-2 h-px w-full" />
         {orderInfo.status !== "paid" && <PaymentButton />}
