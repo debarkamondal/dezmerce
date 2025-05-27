@@ -1,5 +1,6 @@
 import { cookies } from "next/headers";
 import PaymentButton from "./PaymentButton";
+import { Info } from "lucide-react";
 
 const PaymentPage = async () => {
   const url = `https://${process.env.NEXT_PUBLIC_BACKEND_URL}/${process.env.NEXT_PUBLIC_STAGE}`;
@@ -13,12 +14,21 @@ const PaymentPage = async () => {
   return (
     <main className="text-primary mx:mx-12 md:grid md:grid-cols-2">
       <h1 className="text-center text-2xl font-semibold md:col-span-2 md:my-8 md:text-left md:text-5xl xl:mb-16">
-        Pay
+        {orderInfo.status === "initiated" ? "Pay" : "Order Status"}
       </h1>
       <section>
         {/* <PaymentButton paymentInfo={paymentInfo} /> */}
         <h2 className="mt-2 text-lg font-semibold">OrderId</h2>
-        <p className="mx-2">{orderInfo.id}</p>
+        <div className="mx-2">
+          {orderInfo.id}
+          <p className="bg-primary text-secondary ml-2 inline-flex items-center gap-2 rounded-md px-2 py-1 font-semibold">
+            <Info size={16} strokeWidth={3} />
+            <span>
+              {orderInfo.status.charAt(0).toUpperCase() +
+                orderInfo.status.substring(1)}
+            </span>
+          </p>
+        </div>
         <p className="col-span-2 mt-2 text-lg font-semibold">Address</p>
         <div className="m-2">
           <p>{orderInfo.name}</p>
@@ -60,7 +70,7 @@ const PaymentPage = async () => {
           <span>{orderInfo.total}</span>
         </p>
         <div className="bg-primary mx-auto my-2 h-px w-full" />
-        <PaymentButton />
+        {orderInfo.status !== "paid" && <PaymentButton />}
       </section>
     </main>
   );

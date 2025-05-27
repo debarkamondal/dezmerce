@@ -64,8 +64,8 @@ export function AddressForm() {
       qty: item.qty,
     };
   });
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    initiateOrder({
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    await initiateOrder({
       user: {
         name: values.name,
         email: values.email,
@@ -80,7 +80,7 @@ export function AddressForm() {
       },
       items,
     });
-    redirect("/pay");
+    redirect("/public/order");
   }
   return (
     <Form {...form}>
