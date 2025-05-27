@@ -2,7 +2,6 @@
 import { cookies } from "next/headers";
 import { CartItem, order, Product } from "./types";
 import { revalidatePath, revalidateTag } from "next/cache";
-import { redirect } from "next/navigation";
 
 const url = `https://${process.env.NEXT_PUBLIC_BACKEND_URL}/${process.env.NEXT_PUBLIC_STAGE}`;
 export const getCart = async () => {
@@ -105,7 +104,7 @@ export const updateCategory = async (
 export const initiateOrder = async (body: order) => {
   const cookieStore = await cookies();
 
-  const payload: Record<string, any> = {
+  const payload: Record<string, unknown> = {
     method: "POST",
     body: JSON.stringify(body),
   };

@@ -8,7 +8,7 @@ const PaymentButton = () => {
   const onSubmit = async () => {
     const paymentInfo = await initiatePayment();
     // const orderId = paymentInfo.description.split(":")[1];
-    let options = {
+    const options = {
       key: process.env.NEXT_PUBLIC_PAYMENT_GW_KEY_ID,
       currency: "INR",
       name: "Dezmerce",
@@ -20,7 +20,9 @@ const PaymentButton = () => {
       },
       ...paymentInfo,
     };
-    let rzp1 = new (window as any).Razorpay(options);
+
+    //@ts-expect-error Razorpay does exists since the sicript is loaded in client component window and Razorpay creates linting problems
+    const rzp1 = new window.Razorpay(options);
     rzp1.open();
   };
   return (
