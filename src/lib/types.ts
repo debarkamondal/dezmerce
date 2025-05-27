@@ -35,3 +35,20 @@ export type category = {
   qty: number;
   image: string;
 };
+
+export type order = {
+  id?: string;
+  items?: Record<string, { category: string; qty: number }>;
+  user: {
+    name: string;
+    email?: string;
+    phone?: number;
+    address: {
+      addressLine1: string;
+      addressLine2: string;
+      city: string;
+      state: string;
+      pincode: number;
+    };
+  };
+};

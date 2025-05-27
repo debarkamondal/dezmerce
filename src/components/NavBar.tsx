@@ -123,12 +123,12 @@ export default function NavBar() {
           </DropdownMenuContent>
         </DropdownMenu>
         {!session?.user && (
-          <Button className="hidden md:block" onClick={() => signIn()}>
+          <Button className="hidden lg:block" onClick={() => signIn()}>
             Sign In
           </Button>
         )}
         {session?.user && (
-          <Button className="hidden md:block" onClick={() => signOut()}>
+          <Button className="hidden lg:block" onClick={() => signOut()}>
             Sign Out
           </Button>
         )}

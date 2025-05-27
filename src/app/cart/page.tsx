@@ -42,13 +42,13 @@ const Cart = () => {
             width={200}
             alt={`${item.title} image`}
           />
-          <div className="w-3/5 p-4">
+          <div className="w-3/5 p-4 md:grow">
             <p className="line-clamp-1">{item.title}</p>
             <span className="text-xs font-normal">
               <b>&#8377; {item.price}</b> x{item.qty}
             </span>
           </div>
-          <div className="self-center font-semibold">
+          <div className="self-center font-semibold md:mt-4">
             &#8377; {item.qty * item.price}
           </div>
         </Link>
@@ -59,8 +59,10 @@ const Cart = () => {
         <span className="grow">
           &#8377; {totalUpdatedPrice !== 0 ? totalUpdatedPrice : totalPrice}
         </span>
-        <Button className="mx-auto shrink place-self-end">
-          Checkout <ChevronRight />
+        <Button className="mx-auto shrink place-self-end" asChild>
+          <Link href={"/checkout"}>
+            Checkout <ChevronRight />
+          </Link>
         </Button>
       </p>
     </main>

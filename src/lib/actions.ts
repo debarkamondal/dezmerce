@@ -1,7 +1,8 @@
 "use server";
 import { cookies } from "next/headers";
-import { CartItem, Product } from "./types";
+import { CartItem, order, Product } from "./types";
 import { revalidatePath, revalidateTag } from "next/cache";
+import { redirect } from "next/navigation";
 
 const url = `https://${process.env.NEXT_PUBLIC_BACKEND_URL}/${process.env.NEXT_PUBLIC_STAGE}`;
 export const getCart = async () => {
@@ -100,6 +101,45 @@ export const updateCategory = async (
   });
 
   return await data.json();
+};
+export const initiateOrder = async (body: order) => {
+  const cookieStore = await cookies();
+
+  const payload: Record<string, any> = {
+    method: "POST",
+    body: JSON.stringify(body),
+  };
+  const authToken = cookieStore.get("auth")?.value;
+  if (authToken) {
+    payload.headers = {
+      Authorization: authToken,
+    };
+  }
+  try {
+    const data = await fetch(`${url}/orders`, payload);
+    let cookie: string | null = data.headers.get("Set-Cookie");
+    if (!cookie) throw new Error("backend responded with no cookie");
+    cookie = cookie?.substring(cookie.indexOf("=") + 1, cookie.indexOf(";"));
+    cookieStore.set("order", cookie, {
+      httpOnly: true,
+      secure: true,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+export const initiatePayment = async () => {
+  const cookieStore = await cookies();
+  try {
+    const data = await fetch(`${url}/payments`, {
+      headers: {
+        order: cookieStore.get("order")?.value as string,
+      },
+    });
+    return await data.json();
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 export const revalidatepath = async (path: string) => revalidatePath(path);

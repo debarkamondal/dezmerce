@@ -16,13 +16,12 @@ import { usePathname } from "next/navigation";
 
 const Cart = () => {
   const pathname = usePathname();
-  console.log(pathname);
   const cart = useCartContext();
   const totalPrice = cart.reduce((totalPrice, item) => {
     return (totalPrice += item.price * item.qty);
   }, 0);
   return (
-    <DropdownMenu>
+    <DropdownMenu modal={false}>
       <DropdownMenuTrigger
         hidden={!totalPrice || pathname === "/cart"}
         className={`border-secondary bg-primary text-secondary fixed right-0 bottom-0 m-4 size-16 cursor-pointer rounded-full border-2`}

@@ -298,7 +298,12 @@ export function ProductForm({
             <FormItem>
               <FormLabel>Price</FormLabel>
               <FormControl>
-                <Input placeholder="Enter price" {...field} type="number" />
+                <Input
+                  placeholder="Enter price"
+                  {...field}
+                  type="number"
+                  value={field.value === 0 ? "" : field.value}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
