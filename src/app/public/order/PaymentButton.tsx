@@ -6,14 +6,15 @@ import Script from "next/script";
 
 const PaymentButton = () => {
   const onSubmit = async () => {
-    const paymentInfo = await initiatePayment();
+    const data = await initiatePayment();
     // const orderId = paymentInfo.description.split(":")[1];
+    const { token, ...paymentInfo } = data;
     const options = {
       key: process.env.NEXT_PUBLIC_PAYMENT_GW_KEY_ID,
       currency: "INR",
       name: "Dezmerce",
       image: "https://www.dkmondal.in/favicon.ico",
-      callback_url: "https://api.dkmondal.in/test/payments",
+      callback_url: `https://api.dkmondal.in/test/payments?token=${token}`,
       theme: {
         color: "#d94167",
         backdrop: "#f5d3db",

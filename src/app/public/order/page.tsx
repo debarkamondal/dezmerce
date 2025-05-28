@@ -17,17 +17,19 @@ const PaymentPage = async () => {
         {orderInfo.status === "initiated" ? "Pay" : "Order Status"}
       </h1>
       <section>
-        <h2 className="mt-2 text-lg font-semibold">OrderId</h2>
-        <div className="mx-2">
-          {orderInfo.id}
-          <p className="bg-primary text-secondary ml-2 inline-flex items-center gap-2 rounded-md px-2 py-1 font-semibold">
+        <h2 className="mt-2 flex justify-between text-xl font-semibold">
+          Order
+          <p className="bg-primary text-secondary ml-2 inline-flex h-8 items-center gap-2 rounded-md px-2 py-1 text-base font-semibold md:mr-16">
             <Info size={16} strokeWidth={3} />
             <span>
               {orderInfo.status.charAt(0).toUpperCase() +
                 orderInfo.status.substring(1)}
             </span>
           </p>
-        </div>
+        </h2>
+        <p className="mx-2">
+          <span className="font-medium">ID:</span> {orderInfo.id}
+        </p>
         <p className="col-span-2 mt-2 text-lg font-semibold">Address</p>
         <div className="m-2">
           <p>{orderInfo.name}</p>

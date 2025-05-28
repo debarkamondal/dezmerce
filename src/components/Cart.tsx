@@ -13,15 +13,17 @@ import Image from "next/image";
 import Link from "next/link";
 import { buttonVariants } from "./ui/button";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 
 const Cart = () => {
+  const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
   const cart = useCartContext();
   const totalPrice = cart.reduce((totalPrice, item) => {
     return (totalPrice += item.price * item.qty);
   }, 0);
   return (
-    <DropdownMenu modal={false}>
+    <DropdownMenu modal={false} open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuTrigger
         hidden={!totalPrice || pathname === "/cart"}
         className={`border-secondary bg-primary text-secondary fixed right-0 bottom-0 m-4 size-16 cursor-pointer rounded-full border-2`}
@@ -56,7 +58,11 @@ const Cart = () => {
           <p>Total Price: </p>
           <p>&#8377; {totalPrice}</p>
         </DropdownMenuLabel>
-        <Link href="/cart" className={`${buttonVariants()} mt-2 w-full p-4`}>
+        <Link
+          href="/cart"
+          className={`${buttonVariants()} mt-2 w-full p-4`}
+          onClick={() => setIsOpen(false)}
+        >
           Go to Cart
         </Link>
       </DropdownMenuContent>
