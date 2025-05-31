@@ -160,7 +160,7 @@ export const shipOrder = async (
     if (data.status !== 200) throw new Error("Something went wrong");
     return { status: "success" };
   } catch (err) {
-    return { status: "error" };
+    console.log(err);
   }
 };
 export const cancelOrder = async (orderId: string, email: string) => {
@@ -176,7 +176,6 @@ export const cancelOrder = async (orderId: string, email: string) => {
       }),
     });
     if (data.status !== 200) throw new Error("Something went wrong");
-    console.log(await data.json());
     return { status: "success" };
   } catch (err) {
     console.log(err);
