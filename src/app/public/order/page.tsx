@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
 import PaymentButton from "./PaymentButton";
 import { Info } from "lucide-react";
+import { userOrder } from "@/lib/types";
 
 const PaymentPage = async () => {
   const url = `https://${process.env.NEXT_PUBLIC_BACKEND_URL}/${process.env.NEXT_PUBLIC_STAGE}`;
@@ -10,7 +11,7 @@ const PaymentPage = async () => {
       ["order-token"]: cookieStore.get("order")?.value as string,
     },
   });
-  const orderInfo = await data.json();
+  const orderInfo: userOrder = await data.json();
   return (
     <main className="text-primary mx:mx-12 md:grid md:grid-cols-2">
       <h1 className="text-center text-2xl font-semibold md:col-span-2 md:my-8 md:text-left md:text-5xl xl:mb-16">
@@ -22,8 +23,8 @@ const PaymentPage = async () => {
           <p className="bg-primary text-secondary ml-2 inline-flex h-8 items-center gap-2 rounded-md px-2 py-1 text-base font-semibold md:mr-16">
             <Info size={16} strokeWidth={3} />
             <span>
-              {orderInfo.status.charAt(0).toUpperCase() +
-                orderInfo.status.substring(1)}
+              {orderInfo.status?.charAt(0).toUpperCase() +
+                orderInfo.status?.substring(1)}
             </span>
           </p>
         </h2>
@@ -32,15 +33,15 @@ const PaymentPage = async () => {
         </p>
         <p className="col-span-2 mt-2 text-lg font-semibold">Address</p>
         <div className="m-2">
-          <p>{orderInfo.name}</p>
-          <p>{orderInfo.address.addressLine1}</p>
-          <p>{orderInfo.address.addressLine2}</p>
-          <p>{orderInfo.address.city}</p>
+          <p>{orderInfo.user.name}</p>
+          <p>{orderInfo.user.address.addressLine1}</p>
+          <p>{orderInfo.user.address.addressLine2}</p>
+          <p>{orderInfo.user.address.city}</p>
           <p>
-            {orderInfo.address.state}, {orderInfo.address.pincode}
+            {orderInfo.user.address.state}, {orderInfo.user.address.pincode}
           </p>
-          <p>{orderInfo.phone}</p>
-          <p>{orderInfo.email}</p>
+          <p>{orderInfo.user.phone}</p>
+          <p>{orderInfo.user.email}</p>
         </div>
       </section>
       <section>

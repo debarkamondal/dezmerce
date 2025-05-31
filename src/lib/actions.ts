@@ -1,6 +1,6 @@
 "use server";
 import { cookies } from "next/headers";
-import { CartItem, order, Product } from "./types";
+import { CartItem, Product, orderBody } from "./types";
 import { revalidatePath, revalidateTag } from "next/cache";
 
 const url = `https://${process.env.NEXT_PUBLIC_BACKEND_URL}/${process.env.NEXT_PUBLIC_STAGE}`;
@@ -101,7 +101,7 @@ export const updateCategory = async (
 
   return await data.json();
 };
-export const initiateOrder = async (body: order) => {
+export const initiateOrder = async (body: orderBody) => {
   const cookieStore = await cookies();
 
   const payload: Record<string, unknown> = {
@@ -136,6 +136,48 @@ export const initiatePayment = async () => {
       },
     });
     return await data.json();
+  } catch (err) {
+    console.log(err);
+  }
+};
+export const shipOrder = async (
+  trackingId: string,
+  orderId: string,
+  email: string,
+) => {
+  const cookieStore = await cookies();
+  try {
+    const data = await fetch(`${url}/admin/orders/ship/${orderId}`, {
+      headers: {
+        Authorization: cookieStore.get("auth")?.value as string,
+      },
+      method: "POST",
+      body: JSON.stringify({
+        trackingId,
+        email,
+      }),
+    });
+    if (data.status !== 200) throw new Error("Something went wrong");
+    return { status: "success" };
+  } catch (err) {
+    return { status: "error" };
+  }
+};
+export const cancelOrder = async (orderId: string, email: string) => {
+  const cookieStore = await cookies();
+  try {
+    const data = await fetch(`${url}/admin/orders/cancel/${orderId}`, {
+      headers: {
+        Authorization: cookieStore.get("auth")?.value as string,
+      },
+      method: "POST",
+      body: JSON.stringify({
+        email,
+      }),
+    });
+    if (data.status !== 200) throw new Error("Something went wrong");
+    console.log(await data.json());
+    return { status: "success" };
   } catch (err) {
     console.log(err);
   }
