@@ -161,6 +161,7 @@ export const shipOrder = async (
     return { status: "success" };
   } catch (err) {
     console.log(err);
+    return { status: "error" };
   }
 };
 export const cancelOrder = async (orderId: string, email: string) => {
