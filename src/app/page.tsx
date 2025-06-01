@@ -18,7 +18,7 @@ const carouselData = [
     category: "Skirts",
     price: 999,
     thumbnail: "skirt.webp",
-    link: "/category/pants",
+    link: "/category/skirts",
   },
   {
     hook: "Newly released",
