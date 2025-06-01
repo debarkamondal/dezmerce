@@ -58,23 +58,10 @@ const OrderCard = ({ order }: { order: adminOrder }) => {
             {order.user.email}
             <br />
           </p>
-          <h3 className="my-2 text-lg font-semibold">Razorpay</h3>
-          <p className="font-semibold">
-            Payment Id:
-            <span className="ml-2 font-normal">{order.payment_id}</span>
+          <p className="mt-2 font-semibold">
+            Transaction Id:{" "}
+            <span className="font-normal">{order.payment_id}</span>
           </p>
-          {order.gwOrderId && (
-            <p className="font-semibold">
-              Order Id:
-              <span className="ml-2 font-normal">{order.gwOrderId}</span>
-            </p>
-          )}
-          {order.refundId && (
-            <p className="font-semibold">
-              Refund Id:
-              <span className="ml-2 font-normal">{order.refundId}</span>
-            </p>
-          )}
         </div>
         <div>
           <h2 className="text-lg font-semibold">Items:</h2>
@@ -103,7 +90,7 @@ const OrderCard = ({ order }: { order: adminOrder }) => {
           <span>Total: </span>
           <span>&#8377;{order.total}</span>
         </p>
-        {order.lsi === "paid" && order.user.email && (
+        {order.lsi !== "shipped" && order.user.email && (
           <ShipOrderDialog orderId={id} email={order.user.email} />
         )}
         {order.lsi !== "cancelled" && order.user.email && (
