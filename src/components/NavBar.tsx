@@ -17,11 +17,14 @@ import { useEffect, useState } from "react";
 import { DropdownMenuPortal } from "@radix-ui/react-dropdown-menu";
 import { ChevronDown } from "lucide-react";
 import { getCategories } from "@/lib/utils";
+import { useCartContext } from "./providers/CartProvider";
 
 type NavLinks = { [key: string]: string };
 const userLinks: NavLinks = {
   about: "/about",
   support: "/support",
+  orders: "/orders",
+  cart: "/cart",
 };
 const adminLinks: NavLinks = {
   dashboard: "/admin/dashboard",
@@ -30,6 +33,7 @@ const adminLinks: NavLinks = {
 
 export default function NavBar() {
   const { data: session } = useSession();
+  const cart = useCartContext();
   const [categories, setCategories] = useState<Array<string>>();
   const [isOpen, setIsOpen] = useState(false);
   useEffect(() => {
@@ -43,8 +47,15 @@ export default function NavBar() {
 
   return (
     <nav className="flex items-center justify-between gap-4 p-2">
-      <Link href={"/"}>
-        <Image src={"/logo.png"} height="50" width="50" alt="brand-logo" />
+      <Link href={"/"} className="flex items-center">
+        <Image
+          src={"/logo.png"}
+          height="50"
+          width="50"
+          alt="brand-logo"
+          className="mx-2"
+        />
+        <span className="font-museo-moderno text-lg">/Dezmerce</span>
       </Link>
       <ul className="align-self-start ml-14 hidden grow gap-16 text-sm font-semibold uppercase lg:flex">
         <li>
@@ -75,7 +86,12 @@ export default function NavBar() {
         </li>
         {Object.keys(navLinks).map((link) => (
           <Link href={navLinks[link]} key={link}>
-            <li>{link}</li>
+            <li>
+              {link}
+              <span className="ml-1 font-semibold">
+                {link === "cart" ? `(${cart.length})` : ""}
+              </span>
+            </li>
           </Link>
         ))}
       </ul>
@@ -111,7 +127,12 @@ export default function NavBar() {
             </DropdownMenuSub>
             {Object.keys(navLinks).map((link) => (
               <Link key={link} href={navLinks[link]} className="capitalize">
-                <DropdownMenuItem>{link}</DropdownMenuItem>
+                <DropdownMenuItem>
+                  {link}
+                  <span className="font-semibold">
+                    {link === "cart" ? `(${cart.length})` : ""}
+                  </span>
+                </DropdownMenuItem>
               </Link>
             ))}
             <DropdownMenuItem>
