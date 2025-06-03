@@ -1,3 +1,4 @@
+import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -10,6 +11,23 @@ const Footer = () => {
   return (
     <footer className="bg-primary text-secondary relative mt-2 flex-col items-center gap-2 p-4 py-8 md:flex md:gap-4 md:text-center">
       <div className="w-4/5 flex-col items-center text-sm md:flex md:gap-2 md:text-base">
+        <p className="mb-4 items-center gap-2 font-medium md:mb-0 md:flex">
+          All the products and images on this website belong to{" "}
+          <a
+            href="https://thesouledstore.com"
+            target="_blank"
+            className="inline-flex items-center gap-1 underline"
+          >
+            <Image
+              src={"/tss-logo.avif"}
+              height={30}
+              width={25}
+              alt="the souled store logo"
+            />
+            <span>The Souled Store</span>
+            <ArrowRight size={16} />
+          </a>
+        </p>
         <p className="font-medium">This website is made by</p>
         <span className="font-alex-brush text-3xl font-bold md:text-5xl">
           Dezire

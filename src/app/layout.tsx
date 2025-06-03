@@ -6,6 +6,8 @@ import Footer from "@/components/Footer";
 import { SessionProvider } from "next-auth/react";
 import { CartProvider } from "@/components/providers/CartProvider";
 import Cart from "@/components/Cart";
+import { ArrowRight } from "lucide-react";
+import Image from "next/image";
 
 const museoModerno = MuseoModerno({
   variable: "--font-museo-moderno",
@@ -21,7 +23,7 @@ const alexBrush = Alex_Brush({
 });
 
 export const metadata: Metadata = {
-  title: "Dezmerce | Simple Ecommerce",
+  title: "Dezmerce | Dezire for E-commerce",
   description: "Ecommerce website for small businesses",
 };
 
@@ -38,6 +40,24 @@ export default function RootLayout({
         <SessionProvider>
           <CartProvider>
             <NavBar />
+            <p className="text-primary-foreground bg-red-500 py-1 text-center font-medium md:flex md:items-center md:justify-center">
+              <span className="mx-1 inline font-light">
+                This is just a personal project for showcase. All the products
+                and images on this website belong to
+              </span>
+              <span className="my-auto inline-flex items-center gap-1 font-semibold underline">
+                <Image
+                  src={"/tss-logo.avif"}
+                  height={30}
+                  width={25}
+                  alt="the souled store logo"
+                />
+                <a href="https://thesouledstore.com" target="_blank">
+                  The Souled Store
+                </a>
+                <ArrowRight size={16} />
+              </span>
+            </p>
             <div className="grow p-2 md:px-8 xl:px-40">{children}</div>
             <Footer />
             <Cart />
