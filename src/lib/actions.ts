@@ -184,4 +184,4 @@ export const cancelOrder = async (orderId: string, email: string) => {
 };
 
 export const revalidatepath = async (path: string) => revalidatePath(path);
-export const revalidatetag = async (tag: string) => revalidateTag(tag);
+export const revalidatetag = async (tag: string) => revalidateTag(tag, "max");
