@@ -1,4 +1,5 @@
 import { auth } from "@/auth";
+import { NextResponse } from "next/server";
 
 export default auth((req) => {
   if (
@@ -6,8 +7,9 @@ export default auth((req) => {
     req.auth?.user.role !== "admin"
   ) {
     const url = new URL("/api/auth/signin", req.nextUrl.origin);
-    return Response.redirect(url);
+    return NextResponse.redirect(url);
   }
+  return NextResponse.next();
 });
 
 // Optionally, don't invoke Middleware on some paths
